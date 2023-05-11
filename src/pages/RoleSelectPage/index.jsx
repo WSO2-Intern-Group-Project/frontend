@@ -28,7 +28,7 @@ export default function RoleSelectPage() {
           sx={{
             alignItems: "center",
             backgroundColor: "#0D1821",
-            height: [380, 1100],
+            height: [380, 1000],
             borderRadius: ["0 0 50px 50px", "0 0 0 0"],
           }}>
           <Box width={[200, 600]} mx="auto" pt={[10, 30]}>
