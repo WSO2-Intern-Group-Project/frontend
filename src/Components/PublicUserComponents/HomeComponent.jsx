@@ -6,10 +6,10 @@ import Spacing from "../../Utils/Spacing";
 import { NavLink } from "react-router-dom";
 
 const pages = {
-  "Apply for Address Certificate": "",
-  "Apply for Identity Certificate": "",
+  "Apply for Address Certificate": "applyAddress",
+  "Apply for Identity Certificate": "applyIdentity",
   "Check Status": "myRequests",
-  "Help": "",
+  "Help": "help",
 };
 
 function HomeComponent() {
