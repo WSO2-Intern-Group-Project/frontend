@@ -1,21 +1,12 @@
-import logo from "./logo.svg";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import HomePage from "./pages/HomePage";
-import RoleSelectPage from "./pages/RoleSelectPage";
-import "./App.css";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./Theme";
+import ViewRoutes from "./routes/ViewRoutes";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<HomePage />} exact />
-        <Route path="/signin" element={<SignIn />} exact />
-        <Route path="/signup" element={<SignUp />} exact />
-        <Route path="/role-select" element={<RoleSelectPage />} exact />
-      </Routes>
-    </BrowserRouter>
+    <ThemeProvider theme={theme}> 
+      <ViewRoutes />
+    </ThemeProvider>
   );
 }
 
