@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Typography, Button, useMediaQuery } from "@mui/material";
-import SignInImage from "../../assets/images/signin-image.png";
+import SignUpImage from "../../assets/images/signup-image.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import "./index.css";
 
-export default function SignIn() {
+export default function SignUp() {
   const isMobileScreen = useMediaQuery("(max-width: 767px)");
 
   return (
@@ -18,8 +18,8 @@ export default function SignIn() {
         justifyContent: "center",
       }}>
       <Box px={[5, 200]}>
-        <Box mx="auto" sx={{ width: "50%" }}>
-          <img src={SignInImage} alt="SignIn" style={{ width: "100%" }} />
+        <Box mx="auto" width={[200, 700]}>
+          <img src={SignUpImage} alt="SignIn" style={{ width: "100%" }} />
         </Box>
         <Box mb={[5, 20]} />
         <Typography
@@ -33,7 +33,7 @@ export default function SignIn() {
           variant="h5"
           gutterBottom
           sx={{ fontWeight: 700, color: "#ffffff", fontSize: [24, 72] }}>
-          Sign In
+          Sign Up
         </Typography>
         <Box mb={[5, 10]} />
         <Box>
@@ -149,11 +149,11 @@ export default function SignIn() {
             width: "100%",
           }}>
           <Typography variant="body1" sx={{ color: "#eeeeee", fontSize: 40, marginRight: 2 }}>
-            No Account yet?
+            Already registered?
           </Typography>
           <Button sx={{ textTransform: "none", color: "#7aa9e9" }}>
             <Typography variant="body1" sx={{ fontSize: 40, textDecoration: "underline" }}>
-              Sign Up Now
+              Sign In Now
             </Typography>
           </Button>
         </Box>
@@ -174,11 +174,11 @@ export default function SignIn() {
             borderRadius: "50px 50px 0 0",
           }}>
           <Typography variant="body1" sx={{ color: "#ffffff" }}>
-            No Account yet?
+            Already registered?
           </Typography>
           <Button sx={{ textTransform: "none", color: "#7aa9e9" }}>
             <Typography variant="body1" sx={{ textDecoration: "underline" }}>
-              Sign Up Now
+              Sign In Now
             </Typography>
           </Button>
         </Box>
