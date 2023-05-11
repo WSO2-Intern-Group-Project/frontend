@@ -6,6 +6,9 @@ import Drawer from "../Components/PublicUserComponents/Drawer";
 import HelpComponent from "../Components/PublicUserComponents/HelpComponent";
 import HomeComponent from "../Components/PublicUserComponents/HomeComponent";
 import MyRequestsComponent from "../Components/PublicUserComponents/MyRequestsComponnent";
+import SignIn from "../pages/SignIn";
+import SignUp from "../pages/SignUp";
+import RoleSelectPage from "../pages/RoleSelectPage";
 
 const ViewRoutes = () => {
   return (
@@ -21,6 +24,9 @@ const ViewRoutes = () => {
         <Route path="applyAddress" element={<ApplyAdddressComponent />} />
         <Route path="applyIdentity" element={<ApplyIdentityComponent />} />
       </Route>
+      <Route path="/signin" element={<SignIn />} exact />
+      <Route path="/signup" element={<SignUp />} exact />
+      <Route path="/role-select" element={<RoleSelectPage />} exact />
     </Routes>
   );
 };
