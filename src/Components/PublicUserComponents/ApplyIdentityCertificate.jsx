@@ -1,12 +1,20 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box } from "@mui/system";
-import { Button, Card, Typography } from "@mui/material";
+import { Button, Card, TextField, Typography } from "@mui/material";
 import IdentityImage from "./nic.jpg";
 
 const fullName = "John Doe";
 const nic = "123456789V";
 
 function ApplyIdentityComponent() {
+    const [reason, setReason] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(reason);
+        setReason("");
+    }
+
   return (
     <>
       <Box>
@@ -47,26 +55,48 @@ function ApplyIdentityComponent() {
                 <b>NIC:</b> {nic}
               </Typography>
             </Box>
-            <Box
-              sx={{
-                width: "80%",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <Button
-                variant="contained"
-                color="info"
-                sx={{ width: "70%", borderRadius: 4 }}
-              >
-                Apply Now
-              </Button>
+            <Box sx={{ width: "80%", mb: 2 }}>
+              <form onSubmit={handleSubmit}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                  }}
+                >
+                  <TextField
+                    id="outlined-basic"
+                    label="Reason"
+                    color="secondary"
+                    variant="filled"
+                    multiline
+                    rows={4}
+                    sx={{
+                      width: "100%",
+                      mb: 2,
+                      backgroundColor: "primary.light",
+                      borderRadius: 3,
+                    }}
+                    value={reason}
+                    onChange={(e) => setReason(e.target.value)}
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="info"
+                    sx={{ width: "80%", borderRadius: 2 }}
+                  >
+                    Apply Now
+                  </Button>
+                </Box>
+              </form>
             </Box>
           </Card>
           <Box
             sx={{
-              mt: 10,
+              mt: 2,
               width: "100%",
               display: "flex",
               justifyContent: "center",

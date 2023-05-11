@@ -9,11 +9,7 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Icon,
-  IconButton,
-  InputLabel,
   Pagination,
-  Select,
   TextField,
   Typography,
 } from "@mui/material";
@@ -32,6 +28,8 @@ const requests = {
     date: "12/12/2021",
     address: "123, ABC Street, XYZ City",
     status: "Pending",
+    reason: "This is a sample reason, This is a sample reason",
+    gsDivision: "ABC",
   },
   2: {
     id: 2,
@@ -40,6 +38,8 @@ const requests = {
     date: "12/12/2021",
     address: "123, ABC Street, XYZ City",
     status: "Rejected",
+    reason: "This is a sample reason, This is a sample reason",
+    nic: "123456789V",
   },
   3: {
     id: 3,
@@ -48,6 +48,8 @@ const requests = {
     date: "12/02/2021",
     address: "123, ABC Street, XYZ City",
     status: "Completed",
+    reason: "This is a sample reason, This is a sample reason",
+    gsDivision: "ABC",
   },
   4: {
     id: 4,
@@ -56,6 +58,8 @@ const requests = {
     date: "12/12/2021",
     address: "123, ABC Street, XYZ City",
     status: "Pending",
+    reason: "This is a sample reason, This is a sample reason",
+    nic: "123456789V",
   },
   5: {
     id: 5,
@@ -64,6 +68,8 @@ const requests = {
     date: "12/12/2021",
     address: "123, ABC Street, XYZ City",
     status: "NeedMoreInfo",
+    reason: "This is a sample reason, This is a sample reason",
+    gsDivision: "ABC",
   },
   6: {
     id: 6,
@@ -72,6 +78,8 @@ const requests = {
     date: "12/09/2021",
     address: "123, ABC Street, XYZ City",
     status: "Pending",
+    reason: "This is a sample reason, This is a sample reason",
+    nic: "123456789V",
   },
 };
 
@@ -82,6 +90,8 @@ function MyRequestsComponent() {
   const [filteredStatuses, setFilteredStatuses] = useState([]);
   const [filtered, setFiltered] = useState(false);
   const [filteredRequests, setFilteredRequests] = useState({});
+  const [openPreview, setOpenPreview] = useState(false);
+  const [selectedReq, setSelectedReq] = useState(null);
 
   function handleClose() {
     setOpen(false);
@@ -181,6 +191,86 @@ function MyRequestsComponent() {
           </Button>
         </DialogActions>
       </Dialog>
+
+      <Dialog
+        open={openPreview}
+        onClose={() => {
+          setOpenPreview(false);
+        }}
+        fullWidth
+      >
+        <DialogTitle>{selectedReq?.type}</DialogTitle>
+        <DialogContent>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+              <b>Name</b>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 400 }}>
+              {selectedReq?.name}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+              <b>Applied Date</b>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 400 }}>
+              {selectedReq?.date}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+              <b>Status</b>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 400 }}>
+              {selectedReq?.status}
+            </Typography>
+          </Box>
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+              <b>
+                {selectedReq?.type === "Address Certificate"
+                  ? "Address"
+                  : "NIC"}
+              </b>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 400 }}>
+              {selectedReq?.type === "Address Certificate"
+                ? selectedReq?.address
+                : selectedReq?.nic}
+            </Typography>
+          </Box>
+          {selectedReq?.type === "Address Certificate" && (
+            <Box sx={{ mb: 3 }}>
+              <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                <b>Grama Niladari Division</b>
+              </Typography>
+              <Typography variant="body1" sx={{ fontWeight: 400 }}>
+                {selectedReq?.gsDivision}
+              </Typography>
+            </Box>
+          )}
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="body1" sx={{ fontWeight: 700 }}>
+              <b>Reason</b>
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: 400 }}>
+              {selectedReq?.reason}
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions sx={{ display: "flex", justifyContent: "end" }}>
+          <Button
+            variant="outlined"
+            color="error"
+            onClick={() => {
+              setOpenPreview(false);
+            }}
+          >
+            Close
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       <Box>
         <Box>
           <Card
@@ -252,6 +342,10 @@ function MyRequestsComponent() {
                   borderRadius: 5,
                   width: "90%",
                   backgroundColor: "primary.light",
+                }}
+                onClick={() => {
+                  setSelectedReq(displayedRequests[request]);
+                  setOpenPreview(true);
                 }}
               >
                 <Box sx={{ display: "flex", flexDirection: "column" }}>
