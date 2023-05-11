@@ -1,7 +1,7 @@
 import * as React from "react";
 import { Box } from "@mui/system";
 import { Button, Card } from "@mui/material";
-import Picture from "./pic.png";
+import Picture from "./pic2.jpeg";
 import Spacing from "../../Utils/Spacing";
 import { NavLink } from "react-router-dom";
 
@@ -18,14 +18,14 @@ function HomeComponent() {
       <Box>
         <Box
           sx={{
-            mt: 10,
+            mt: 15,
             display: "flex",
             justifyContent: "center",
           }}
         >
-          <img src={Picture} width="80%" />
+          <img src={Picture} width="100%" />
         </Box>
-        <Spacing size={150} />
+        <Spacing size={160} />
         <Box>
           <Card
             sx={{
@@ -34,7 +34,7 @@ function HomeComponent() {
               borderBottomRightRadius: 0,
               borderTopLeftRadius: 20,
               borderTopRightRadius: 20,
-              backgroundColor: "#bfcc94",
+              background: "linear-gradient(to bottom, #5a9a86,#2c5e4f,#213b32)",
             }}
           >
             {Object.keys(pages).map((page) => (

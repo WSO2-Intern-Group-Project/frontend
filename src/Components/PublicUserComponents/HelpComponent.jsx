@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { Box } from "@mui/system";
 import {
   Button,
@@ -9,6 +9,14 @@ import {
 import HelpImage from "./help.jpg";
 
 function HelpComponent() {
+    const [issue, setIssue] = useState("");
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(issue);
+        setIssue("");
+    }
+
   return (
     <>
       <Box>
@@ -49,7 +57,7 @@ function HelpComponent() {
               as possible.
             </Typography>
             <Box sx={{ width: "80%" }}>
-              <form onSubmit={null}>
+              <form onSubmit={handleSubmit}>
                 <Box
                   sx={{
                     display: "flex",
@@ -60,6 +68,8 @@ function HelpComponent() {
                   }}
                 >
                   <TextField
+                    id="outlined-basic"
+                    placeholder="Write your issue here"
                     variant="standard"
                     multiline
                     rows={5}
@@ -70,6 +80,8 @@ function HelpComponent() {
                       backgroundColor: "primary.light",
                       borderRadius: 5,
                     }}
+                    value={issue}
+                    onChange={(e) => setIssue(e.target.value)}
                   />
                   <Button
                     type="submit"
