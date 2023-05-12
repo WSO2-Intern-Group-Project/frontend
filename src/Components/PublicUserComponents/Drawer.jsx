@@ -28,6 +28,10 @@ function Drawer() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+    console.log("logout");
+  };
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
       <AppBar color="primary" position="static">
@@ -99,7 +103,7 @@ function Drawer() {
                 onClose={handleCloseUserMenu}
               >
                 <MenuItem disabled>{fullname}</MenuItem>
-                <MenuItem onClick={handleCloseUserMenu}>
+                <MenuItem onClick={handleLogout}>
                   <ListItemIcon>
                     <LogoutIcon fontSize="small" color="info" />
                   </ListItemIcon>

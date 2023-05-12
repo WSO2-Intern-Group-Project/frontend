@@ -10,6 +10,7 @@ import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import RoleSelectPage from "../pages/RoleSelectPage";
 import GramaRequestsComponent from "../Components/GramasevakaComponents/GramaRequestsComponent";
+import PersonalDataComponent from "../pages/PersonalDataComponent";
 
 const ViewRoutes = () => {
   return (
@@ -31,6 +32,7 @@ const ViewRoutes = () => {
       </Route>
       <Route path="/signin" element={<SignIn />} exact />
       <Route path="/signup" element={<SignUp />} exact />
+      <Route path="/personalData" element={<PersonalDataComponent />} exact />
       <Route path="/role-select" element={<RoleSelectPage />} exact />
     </Routes>
   );
