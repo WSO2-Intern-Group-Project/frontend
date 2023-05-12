@@ -9,6 +9,7 @@ import MyRequestsComponent from "../Components/PublicUserComponents/MyRequestsCo
 import SignIn from "../pages/SignIn";
 import SignUp from "../pages/SignUp";
 import RoleSelectPage from "../pages/RoleSelectPage";
+import GramaRequestsComponent from "../Components/GramasevakaComponents/GramaRequestsComponent";
 
 const ViewRoutes = () => {
   return (
@@ -23,6 +24,10 @@ const ViewRoutes = () => {
         <Route path="help" element={<HelpComponent />} />
         <Route path="applyAddress" element={<ApplyAdddressComponent />} />
         <Route path="applyIdentity" element={<ApplyIdentityComponent />} />
+      </Route>
+      <Route exact path={"gramasevaka"} element={<Drawer />}>
+        <Route path="myrequests" element={<GramaRequestsComponent />} />
+        <Route path="help" element={<HelpComponent />} />
       </Route>
       <Route path="/signin" element={<SignIn />} exact />
       <Route path="/signup" element={<SignUp />} exact />
