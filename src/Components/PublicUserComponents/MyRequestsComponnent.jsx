@@ -4,6 +4,7 @@ import {
   Autocomplete,
   Button,
   Card,
+  Chip,
   Dialog,
   DialogActions,
   DialogContent,
@@ -156,13 +157,34 @@ function MyRequestsComponent() {
               id="combo-box-demo"
               options={["Address Certificate", "Identity Certificate"]}
               getOptionLabel={(option) => option}
-              sx={{ width: 300 }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    color="info"
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              sx={{ width: "100%" }}
               value={filteredTypes}
               onChange={(event, value) => {
                 setFilteredTypes(value);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Type" placeholder="Type" />
+                <TextField
+                  {...params}
+                  label="Type"
+                  placeholder="Type"
+                  variant="filled"
+                  color="info"
+                  sx={{
+                    p: 1,
+                    backgroundColor: "primary.light",
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                />
               )}
             />
             <Autocomplete
@@ -175,9 +197,30 @@ function MyRequestsComponent() {
               onChange={(event, value) => {
                 setFilteredStatuses(value);
               }}
-              sx={{ width: 300 }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    color="info"
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              sx={{ width: "100%" }}
               renderInput={(params) => (
-                <TextField {...params} label="Status" placeholder="Status" />
+                <TextField
+                  {...params}
+                  label="Status"
+                  placeholder="Status"
+                  variant="filled"
+                  color="info"
+                  sx={{
+                    p: 1,
+                    backgroundColor: "primary.light",
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                />
               )}
             />
           </Box>
