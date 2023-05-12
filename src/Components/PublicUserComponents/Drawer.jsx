@@ -13,6 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
 import { ListItemIcon } from "@mui/material";
 import Footer from "./Footer";
+import logo from "../../assets/logo.png";
 import { NavLink, Outlet } from "react-router-dom";
 
 const fullname = "John Doe";
@@ -33,6 +34,9 @@ function Drawer() {
       <AppBar color="primary" position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            <Box sx={{ width: [25, 70] }} mr={[1, 4]}>
+              <img src={logo} alt="logo" style={{ width: "100%" }} />
+            </Box>
             <Typography
               variant="h6"
               noWrap
@@ -46,9 +50,8 @@ function Drawer() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              Grama App
+              }}>
+              Grama Seva
             </Typography>
             <Typography
               variant="h5"
@@ -62,9 +65,8 @@ function Drawer() {
                 letterSpacing: ".1rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              Grama App
+              }}>
+              Grama Seva
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 0 }}>
@@ -73,8 +75,7 @@ function Drawer() {
                 to={"/user"}
                 size="large"
                 edge="start"
-                color="inherit"
-              >
+                color="inherit">
                 <HomeIcon />
               </IconButton>
               <Tooltip title="profile">
@@ -96,8 +97,7 @@ function Drawer() {
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
+                onClose={handleCloseUserMenu}>
                 <MenuItem disabled>{fullname}</MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <ListItemIcon>
