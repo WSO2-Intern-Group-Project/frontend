@@ -4,15 +4,27 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
-import * as serviceWorkerRegistration from './serviceWorkerRegistration';
+import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+import { AuthProvider } from "@asgardeo/auth-react";
+
+const config = {
+  signInRedirectURL: "http://localhost:3000",
+  signOutRedirectURL: "http://localhost:3000/signin",
+  clientID: "hmfgd0V7TUGkGpHxSAbb12oIlWAa",
+  baseUrl: "https://api.asgardeo.io/t/orgjsd3v",
+  scope: ["openid", "profile","groups"],
+  "storage": "sessionStorage"
+};
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  </React.StrictMode>
+  <AuthProvider config={config}>
+    <React.StrictMode>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </React.StrictMode>
+  </AuthProvider>
 );
 serviceWorkerRegistration.register();
 
