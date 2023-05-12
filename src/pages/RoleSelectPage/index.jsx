@@ -2,6 +2,7 @@ import * as React from "react";
 import { Box, Typography, Button, useMediaQuery, Backdrop, TextField } from "@mui/material";
 import RoleImage from "../../assets/images/role-image.png";
 import HomeNavBar from "../../Components/HomeNavBar";
+import logo from "../../assets/logo.png";
 
 export default function RoleSelectPage() {
   const [open, setOpen] = React.useState(false);
@@ -117,10 +118,12 @@ export default function RoleSelectPage() {
             <Typography
               variant="h5"
               gutterBottom
-              mb={5}
               sx={{ fontWeight: 900, color: "#000000", fontSize: [30, 90] }}>
-              Grama App
+              Grama Seva
             </Typography>
+            <Box sx={{ width: [100, 300] }} mx="auto" my={[3, 10]}>
+              <img src={logo} alt="logo" style={{ width: "100%" }} />
+            </Box>
             <Typography variant="body1" gutterBottom sx={{ color: "#000000", fontSize: [15, 50] }}>
               Grama Niladhari Registration Number
             </Typography>
@@ -216,7 +219,7 @@ export default function RoleSelectPage() {
         </Backdrop>
         <Box>
           <Typography variant="body2" sx={{ fontSize: [14, 40] }}>
-            © {new Date().getFullYear()} Grama App. All rights reserved.
+            © {new Date().getFullYear()} Grama Seva. All rights reserved.
           </Typography>
         </Box>
       </Box>

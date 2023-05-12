@@ -10,9 +10,8 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LogoutIcon from "@mui/icons-material/Logout";
-import HomeIcon from "@mui/icons-material/Home";
+import logo from "../../assets/logo.png";
 import { ListItemIcon } from "@mui/material";
-import { NavLink } from "react-router-dom";
 
 const fullname = "John Doe";
 
@@ -40,6 +39,9 @@ export default function HomeNavBar() {
       }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <Box sx={{ width: [25, 70] }} mr={[1, 4]}>
+            <img src={logo} alt="logo" style={{ width: "100%" }} />
+          </Box>
           <Typography
             variant="h6"
             noWrap
@@ -55,7 +57,7 @@ export default function HomeNavBar() {
               textDecoration: "none",
               fontSize: 60,
             }}>
-            Grama App
+            Grama Seva
           </Typography>
           <Typography
             variant="h5"
@@ -70,7 +72,7 @@ export default function HomeNavBar() {
               color: "inherit",
               textDecoration: "none",
             }}>
-            Grama App
+            Grama Seva
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ flexGrow: 0 }}>

@@ -46,9 +46,8 @@ function Drawer() {
                 letterSpacing: ".3rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              Grama App
+              }}>
+              Grama Seva
             </Typography>
             <Typography
               variant="h5"
@@ -62,9 +61,8 @@ function Drawer() {
                 letterSpacing: ".1rem",
                 color: "inherit",
                 textDecoration: "none",
-              }}
-            >
-              Grama App
+              }}>
+              Grama Seva
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 0 }}>
@@ -73,8 +71,7 @@ function Drawer() {
                 to={"/user"}
                 size="large"
                 edge="start"
-                color="inherit"
-              >
+                color="inherit">
                 <HomeIcon />
               </IconButton>
               <Tooltip title="profile">
@@ -96,8 +93,7 @@ function Drawer() {
                   horizontal: "right",
                 }}
                 open={Boolean(anchorElUser)}
-                onClose={handleCloseUserMenu}
-              >
+                onClose={handleCloseUserMenu}>
                 <MenuItem disabled>{fullname}</MenuItem>
                 <MenuItem onClick={handleCloseUserMenu}>
                   <ListItemIcon>
