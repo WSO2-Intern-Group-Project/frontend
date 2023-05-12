@@ -3,7 +3,7 @@ import { styled } from "@mui/material/styles";
 import { Box, Typography } from "@mui/material";
 
 const StyledBox = styled(Box)({
-    zIndex: -100,
+  zIndex: -100,
   position: "fixed",
   bottom: 0,
   left: 0,
@@ -17,7 +17,7 @@ const Footer = () => {
   return (
     <StyledBox sx={{ alignContent: "flex-end" }}>
       <Typography variant="body2" align="center">
-        © {new Date().getFullYear()} Grama App. All rights reserved.
+        © {new Date().getFullYear()} Grama Seva. All rights reserved.
       </Typography>
     </StyledBox>
   );
