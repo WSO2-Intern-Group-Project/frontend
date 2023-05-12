@@ -13,6 +13,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from "@mui/icons-material/Home";
 import { ListItemIcon } from "@mui/material";
 import Footer from "./Footer";
+import logo from "../../assets/logo.png";
 import { NavLink, Outlet } from "react-router-dom";
 
 const fullname = "John Doe";
@@ -33,6 +34,9 @@ function Drawer() {
       <AppBar color="primary" position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
+            <Box sx={{ width: [25, 70] }} mr={[1, 4]}>
+              <img src={logo} alt="logo" style={{ width: "100%" }} />
+            </Box>
             <Typography
               variant="h6"
               noWrap
