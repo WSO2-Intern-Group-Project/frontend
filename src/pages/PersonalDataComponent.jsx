@@ -1,13 +1,6 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  AppBar,
-  Container,
-  Toolbar,
-  TextField,
-} from "@mui/material";
+import { Box, Typography, Button, TextField } from "@mui/material";
+import HomeNavBar from "../Components/HomeNavBar";
 
 export default function PersonalDataComponent() {
   const [firstName, setFirstName] = useState("");
@@ -19,53 +12,15 @@ export default function PersonalDataComponent() {
   const [email, setEmail] = useState("");
   const [mobileNumber, setMobileNumber] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("submit");
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("submit");
+  };
 
   return (
     <>
       <Box>
-        <AppBar color="primary" position="static">
-          <Container maxWidth="xl">
-            <Toolbar disableGutters>
-              <Typography
-                variant="h6"
-                noWrap
-                component="a"
-                href="/"
-                sx={{
-                  mr: 2,
-                  display: { xs: "none", md: "flex" },
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".3rem",
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-              >
-                Grama App
-              </Typography>
-              <Typography
-                variant="h5"
-                noWrap
-                sx={{
-                  mr: 2,
-                  display: { xs: "flex", md: "none" },
-                  flexGrow: 1,
-                  fontFamily: "monospace",
-                  fontWeight: 700,
-                  letterSpacing: ".1rem",
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-              >
-                Grama App
-              </Typography>
-            </Toolbar>
-          </Container>
-        </AppBar>
+        <HomeNavBar />
       </Box>
       <Box
         sx={{
@@ -79,15 +34,13 @@ export default function PersonalDataComponent() {
           backgroundColor: "primary.main",
           borderBottomLeftRadius: 20,
           borderBottomRightRadius: 20,
-        }}
-      >
+        }}>
         <Typography
           variant="h6"
           sx={{
             fontWeight: 700,
             color: "#fff",
-          }}
-        >
+          }}>
           Personal Details
         </Typography>
         <form onSubmit={handleSubmit}>
@@ -225,11 +178,15 @@ export default function PersonalDataComponent() {
             type="submit"
             sx={{
               borderRadius: 3,
-            }}
-          >
+            }}>
             Submit
           </Button>
         </form>
+      </Box>
+      <Box textAlign="center" pt={[2, 10]}>
+        <Typography variant="body2" sx={{ fontSize: [14, 40] }}>
+          © {new Date().getFullYear()} Grama Seva. All rights reserved.
+        </Typography>
       </Box>
     </>
   );

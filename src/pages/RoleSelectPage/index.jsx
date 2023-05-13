@@ -3,10 +3,12 @@ import { Box, Typography, Button, useMediaQuery, Backdrop, TextField } from "@mu
 import RoleImage from "../../assets/images/role-image.png";
 import HomeNavBar from "../../Components/HomeNavBar";
 import logo from "../../assets/logo.png";
+import { useNavigate } from "react-router-dom";
 
 export default function RoleSelectPage() {
   const [open, setOpen] = React.useState(false);
   const isMobileScreen = useMediaQuery("(max-width: 767px)");
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setOpen(false);
@@ -100,7 +102,8 @@ export default function RoleSelectPage() {
                 fontSize: "2.5rem",
                 padding: "16px 32px",
               },
-            }}>
+            }}
+            onClick={() => navigate("/personalData")}>
             General User
           </Button>
         </Box>
