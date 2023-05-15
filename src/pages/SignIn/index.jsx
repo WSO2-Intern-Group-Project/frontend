@@ -2,11 +2,18 @@ import React from "react";
 import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import signInLogo from "../../assets/signInLogo.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF, faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebookF,
+  faGoogle,
+  faLinkedinIn,
+} from "@fortawesome/free-brands-svg-icons";
 import "./index.css";
+import { useAuthContext } from "@asgardeo/auth-react";
+
 
 export default function SignIn() {
   const isMobileScreen = useMediaQuery("(max-width: 767px)");
+  const { state, signIn, signOut } = useAuthContext();
 
   return (
     <Box
@@ -16,7 +23,8 @@ export default function SignIn() {
         height: "100vh",
         textAlign: "center",
         justifyContent: "center",
-      }}>
+      }}
+    >
       <Box px={[3, 150]}>
         <Box mx="auto" sx={{ width: ["90%", "70%"] }}>
           <img src={signInLogo} alt="SignIn" style={{ width: "100%" }} />
@@ -30,16 +38,19 @@ export default function SignIn() {
             boxShadow: 12,
           }}
           px={[3, 10]}
-          pt={[5, 15]}>
+          pt={[5, 15]}
+        >
           <Typography
             variant="h5"
             gutterBottom
-            sx={{ fontWeight: 700, color: "#f0f4ef", fontSize: [24, 72] }}>
+            sx={{ fontWeight: 700, color: "#f0f4ef", fontSize: [24, 72] }}
+          >
             Sign In
           </Typography>
           <Box mb={[8, 20]} />
           <Box>
             <Button
+              onClick={() => signIn()}
               fullWidth
               variant="contained"
               startIcon={
@@ -73,7 +84,8 @@ export default function SignIn() {
                   fontSize: "2.5rem",
                   padding: "16px 32px",
                 },
-              }}>
+              }}
+            >
               Sign in with facebook
             </Button>
             <Box mb={[2, 5]} />
@@ -98,7 +110,8 @@ export default function SignIn() {
                   fontSize: "2.5rem",
                   padding: "16px 32px",
                 },
-              }}>
+              }}
+            >
               Sign in with Google &nbsp;&nbsp;&nbsp;
             </Button>
             <Box mb={[2, 5]} />
@@ -136,7 +149,8 @@ export default function SignIn() {
                   fontSize: "2.5rem",
                   padding: "16px 32px",
                 },
-              }}>
+              }}
+            >
               Sign in with linkedin &nbsp;&nbsp;
             </Button>
           </Box>
@@ -150,12 +164,19 @@ export default function SignIn() {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-          }}>
-          <Typography variant="body1" sx={{ color: "#eeeeee", fontSize: 40, marginRight: 2 }}>
+          }}
+        >
+          <Typography
+            variant="body1"
+            sx={{ color: "#eeeeee", fontSize: 40, marginRight: 2 }}
+          >
             No Account yet?
           </Typography>
           <Button sx={{ textTransform: "none", color: "#7aa9e9" }}>
-            <Typography variant="body1" sx={{ fontSize: 40, textDecoration: "underline" }}>
+            <Typography
+              variant="body1"
+              sx={{ fontSize: 40, textDecoration: "underline" }}
+            >
               Sign Up Now
             </Typography>
           </Button>
@@ -175,7 +196,8 @@ export default function SignIn() {
             width: "100%",
             height: 80,
             borderRadius: "50px 50px 0 0",
-          }}>
+          }}
+        >
           <Typography variant="body1" sx={{ color: "#ffffff" }}>
             No Account yet?
           </Typography>
