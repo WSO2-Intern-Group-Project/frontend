@@ -15,10 +15,14 @@ import { ListItemIcon } from "@mui/material";
 import Footer from "./Footer";
 import logo from "../../assets/logo.png";
 import { NavLink, Outlet } from "react-router-dom";
+import { useAuthContext } from "@asgardeo/auth-react";
+
 
 const fullname = "John Doe";
 
 function Drawer() {
+  const { state, signIn, signOut,getAccessToken,getDecodedIDToken } = useAuthContext();
+  // console.log(state)
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenUserMenu = (event) => {
@@ -32,6 +36,18 @@ function Drawer() {
   const handleLogout = () => {
     console.log("logout");
   };
+
+  getAccessToken().then((accessToken) => {
+        console.log(accessToken);
+    }).catch((error) => {
+        console.log(error);
+    });
+
+    getDecodedIDToken().then((decodedIDToken) => {
+      console.log(decodedIDToken);
+  }).catch((error) => {
+      // Handle the error
+  })
 
   return (
     <Box sx={{ display: "flex", flexDirection: "column", height: "100%" }}>
@@ -103,7 +119,7 @@ function Drawer() {
                 open={Boolean(anchorElUser)}
                 onClose={handleCloseUserMenu}>
                 <MenuItem disabled>{fullname}</MenuItem>
-                <MenuItem onClick={handleLogout}>
+                <MenuItem onClick={() => signOut()}>
                   <ListItemIcon>
                     <LogoutIcon fontSize="small" color="info" />
                   </ListItemIcon>

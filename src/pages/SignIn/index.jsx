@@ -5,9 +5,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFacebookF, faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
+import { useAuthContext } from "@asgardeo/auth-react";
+
 
 export default function SignIn() {
   const isMobileScreen = useMediaQuery("(max-width: 767px)");
+  const { state, signIn, signOut } = useAuthContext();
   const navigate = useNavigate();
 
   return (
@@ -18,7 +21,8 @@ export default function SignIn() {
         height: "100vh",
         textAlign: "center",
         justifyContent: "center",
-      }}>
+      }}
+    >
       <Box px={[3, 50]}>
         <Box mx="auto" sx={{ width: ["90%", "50%"] }}>
           <img src={signInLogo} alt="SignIn" style={{ width: "100%" }} />
@@ -42,6 +46,7 @@ export default function SignIn() {
           <Box mb={[8, 6]} />
           <Box>
             <Button
+              onClick={() => signIn()}
               fullWidth
               variant="contained"
               startIcon={
@@ -75,7 +80,8 @@ export default function SignIn() {
                   fontSize: "0.9rem",
                   padding: "8px 20px",
                 },
-              }}>
+              }}
+            >
               Sign in with facebook
             </Button>
             <Box mb={2} />
@@ -100,7 +106,8 @@ export default function SignIn() {
                   fontSize: "0.9rem",
                   padding: "8px 20px",
                 },
-              }}>
+              }}
+            >
               Sign in with Google &nbsp;&nbsp;&nbsp;
             </Button>
             <Box mb={2} />
@@ -138,7 +145,8 @@ export default function SignIn() {
                   fontSize: "0.9rem",
                   padding: "8px 20px",
                 },
-              }}>
+              }}
+            >
               Sign in with linkedin &nbsp;&nbsp;
             </Button>
           </Box>
@@ -177,7 +185,8 @@ export default function SignIn() {
             width: "100%",
             height: 80,
             borderRadius: "50px 50px 0 0",
-          }}>
+          }}
+        >
           <Typography variant="body1" sx={{ color: "#ffffff" }}>
             No Account yet?
           </Typography>
