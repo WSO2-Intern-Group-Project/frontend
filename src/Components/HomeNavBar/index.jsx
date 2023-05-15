@@ -33,13 +33,11 @@ export default function HomeNavBar() {
       sx={{
         paddingLeft: 2,
         paddingRight: 2,
-        "@media (min-width: 600px)": {
-          paddingTop: 3,
-        },
+        
       }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <Box sx={{ width: [25, 70] }} mr={[1, 4]}>
+          <Box sx={{ width: 25 }} mr={1}>
             <img src={logo} alt="logo" style={{ width: "100%" }} />
           </Box>
           <Typography
@@ -55,7 +53,7 @@ export default function HomeNavBar() {
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
-              fontSize: 60,
+              fontSize: [60, 20],
             }}>
             Grama Seva
           </Typography>
@@ -81,13 +79,6 @@ export default function HomeNavBar() {
                 <Avatar
                   alt="Remy Sharp"
                   src="/static/images/avatar/2.jpg"
-                  sx={{
-                    "@media (min-width: 600px)": {
-                      fontSize: "2.5rem",
-                      width: 100,
-                      height: 100,
-                    },
-                  }}
                 />
               </IconButton>
             </Tooltip>

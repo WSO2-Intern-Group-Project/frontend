@@ -31,18 +31,18 @@ export default function RoleSelectPage() {
           sx={{
             alignItems: "center",
             backgroundColor: "#0D1821",
-            height: [380, 1000],
+            height: [380, 300],
             borderRadius: ["0 0 50px 50px", "0 0 0 0"],
           }}>
-          <Box width={[200, 600]} mx="auto" pt={[10, 30]}>
+          <Box width={[200, 200]} mx="auto" pt={[10, 5]}>
             <img src={RoleImage} alt="SignIn" style={{ width: "100%" }} />
           </Box>
         </Box>
-        <Box px={[5, 200]} pt={10} height={[290, 900]}>
-          <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, fontSize: [20, 72] }}>
+        <Box px={[5, 60]} pt={[10, 3]} height={[290, 290]}>
+          <Typography variant="h5" gutterBottom sx={{ fontWeight: 700, fontSize: [20, 25] }}>
             Select your role
           </Typography>
-          <Box mb={[5, 10]} />
+          <Box mb={5} />
           <Button
             fullWidth
             variant="contained"
@@ -67,14 +67,14 @@ export default function RoleSelectPage() {
                 margin: 0,
               },
               "@media (min-width: 1024px)": {
-                fontSize: "2.5rem",
-                padding: "16px 32px",
+                fontSize: "0.8rem",
+                padding: "8px 20px",
               },
             }}
             onClick={handleOpen}>
             Grama Niladhari
           </Button>
-          <Box mb={[3, 5]} />
+          <Box mb={[3, 2]} />
           <Button
             fullWidth
             variant="contained"
@@ -99,8 +99,8 @@ export default function RoleSelectPage() {
                 margin: 0,
               },
               "@media (min-width: 1024px)": {
-                fontSize: "2.5rem",
-                padding: "16px 32px",
+                fontSize: "0.8rem",
+                padding: "8px 20px",
               },
             }}
             onClick={() => navigate("/personalData")}>
@@ -116,31 +116,26 @@ export default function RoleSelectPage() {
           open={open}>
           <Box
             sx={{ backgroundColor: "#f0f4ef", borderRadius: 5, boxShadow: 12 }}
-            width={[325, 1500]}
+            width={[325, 700]}
             py={5}>
             <Typography
               variant="h5"
               gutterBottom
-              sx={{ fontWeight: 900, color: "#000000", fontSize: [30, 90] }}>
+              sx={{ fontWeight: 900, color: "#000000", fontSize: 30 }}>
               Grama Seva
             </Typography>
-            <Box sx={{ width: [100, 300] }} mx="auto" my={[3, 10]}>
+            <Box sx={{ width: 100 }} mx="auto" my={[3, 3]}>
               <img src={logo} alt="logo" style={{ width: "100%" }} />
             </Box>
-            <Typography variant="body1" gutterBottom sx={{ color: "#000000", fontSize: [15, 50] }}>
+            <Typography variant="body1" gutterBottom sx={{ color: "#000000", fontSize: [15, 22] }}>
               Grama Niladhari Registration Number
             </Typography>
-            <Box width={[265, 1000]} mx="auto" mt={[2, 5]} mb={["auto", 10]}>
+            <Box width={[265, 500]} mx="auto" mt={2} mb={["auto", 5]}>
               <TextField
                 id="outlined-basic"
                 variant="outlined"
                 size="small"
                 fullWidth
-                inputProps={{
-                  style: {
-                    height: isMobileScreen ? "auto" : 100,
-                  },
-                }}
                 sx={{
                   "@media (max-width: 600px)": {
                     "& .MuiOutlinedInput-root": {
@@ -154,7 +149,7 @@ export default function RoleSelectPage() {
                   },
                 }}
               />
-              <Box mb={[2, 5]} />
+              <Box mb={2} />
               <Button
                 fullWidth
                 variant="contained"
@@ -178,15 +173,12 @@ export default function RoleSelectPage() {
                   "& .MuiButton-startIcon": {
                     margin: 0,
                   },
-                  "@media (min-width: 1024px)": {
-                    fontSize: "2.5rem",
-                    padding: "16px 32px",
-                  },
+                  
                 }}
                 onClick={handleClose}>
                 Back
               </Button>
-              <Box mb={[2, 5]} />
+              <Box mb={2} />
               <Button
                 fullWidth
                 variant="contained"
@@ -210,10 +202,7 @@ export default function RoleSelectPage() {
                   "& .MuiButton-startIcon": {
                     margin: 0,
                   },
-                  "@media (min-width: 1024px)": {
-                    fontSize: "2.5rem",
-                    padding: "16px 32px",
-                  },
+                  
                 }}>
                 Submit
               </Button>
@@ -221,7 +210,7 @@ export default function RoleSelectPage() {
           </Box>
         </Backdrop>
         <Box>
-          <Typography variant="body2" sx={{ fontSize: [14, 40] }}>
+          <Typography variant="body2" sx={{ fontSize: 14 }}>
             © {new Date().getFullYear()} Grama Seva. All rights reserved.
           </Typography>
         </Box>
