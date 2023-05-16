@@ -24,7 +24,10 @@ export default function PersonalDataComponent() {
       </Box>
       <Box
         sx={{
-          p: 4,
+          pt: [4,0],
+          pl: 4,
+          pr: 4,
+          pb: 4,
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -44,11 +47,12 @@ export default function PersonalDataComponent() {
           Personal Details
         </Typography>
         <form onSubmit={handleSubmit}>
-          <Box>
+          <Box px={["none",50]}>
             <TextField
               label="First Name"
               variant="filled"
               fullWidth
+              size="small"
               required
               color="secondary"
               value={firstName}
@@ -64,6 +68,7 @@ export default function PersonalDataComponent() {
               label="Last Name"
               variant="filled"
               fullWidth
+              size="small"
               required
               color="secondary"
               value={lastName}
@@ -78,6 +83,7 @@ export default function PersonalDataComponent() {
             <TextField
               label="Date of Birth"
               variant="filled"
+              size="small"
               fullWidth
               required
               type="date"
@@ -99,6 +105,7 @@ export default function PersonalDataComponent() {
               variant="filled"
               fullWidth
               required
+              size="small"
               color="secondary"
               value={nic}
               onChange={(e) => setNic(e.target.value)}
@@ -114,6 +121,7 @@ export default function PersonalDataComponent() {
               variant="filled"
               fullWidth
               required
+              size="small"
               color="secondary"
               value={gender}
               onChange={(e) => setGender(e.target.value)}
@@ -128,6 +136,7 @@ export default function PersonalDataComponent() {
               label="Address"
               variant="filled"
               fullWidth
+              size="small"
               required
               color="secondary"
               value={address}
@@ -143,6 +152,7 @@ export default function PersonalDataComponent() {
               label="Email"
               variant="filled"
               fullWidth
+              size="small"
               required
               color="secondary"
               type={"email"}
@@ -161,16 +171,18 @@ export default function PersonalDataComponent() {
               fullWidth
               required
               color="secondary"
+              size="small"
               value={mobileNumber}
               onChange={(e) => setMobileNumber(e.target.value)}
               sx={{
-                mb: 4,
+                mb: 2,
                 backgroundColor: "primary.light",
                 borderTopLeftRadius: 10,
                 borderTopRightRadius: 10,
               }}
             />
           </Box>
+          <Box px={["none",50]}>
           <Button
             fullWidth
             variant="contained"
@@ -181,10 +193,11 @@ export default function PersonalDataComponent() {
             }}>
             Submit
           </Button>
+          </Box>
         </form>
       </Box>
-      <Box textAlign="center" pt={[2, 10]}>
-        <Typography variant="body2" sx={{ fontSize: [14, 40] }}>
+      <Box textAlign="center" pt={[3, 3]} pb={[0,1]}>
+        <Typography variant="body2" sx={{ fontSize: 14 }}>
           © {new Date().getFullYear()} Grama Seva. All rights reserved.
         </Typography>
       </Box>
