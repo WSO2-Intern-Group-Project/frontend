@@ -11,23 +11,39 @@ import SignUp from "../pages/SignUp";
 import RoleSelectPage from "../pages/RoleSelectPage";
 import GramaRequestsComponent from "../Components/GramasevakaComponents/GramaRequestsComponent";
 import PersonalDataComponent from "../pages/PersonalDataComponent";
+import { GramasewakaProtectedRoute } from "./GramasewakaProtectedRoute";
+import { UserProtectedRoute } from "./UserProtectedRote";
+import RoleSelect from "../Components/RoleSelect";
 
 const ViewRoutes = () => {
   return (
     <Routes>
-      {/* 
-      <Route exact path={LOGIN} element={<LoginComponent />} />
-      <Route exact path={SIGNUP} element={<SignUp />} /> */}
-      <Route exact path={"/"} element={<Drawer />} />
-      <Route exact path={"user"} element={<Drawer />}>
+      <Route exact path={"/"} element={<RoleSelect />} />
+      <Route
+        exact
+        path={"user"}
+        element={
+          <UserProtectedRoute>
+            <Drawer />
+          </UserProtectedRoute>
+        }
+      >
         <Route index element={<HomeComponent />} />
         <Route path="myrequests" element={<MyRequestsComponent />} />
         <Route path="help" element={<HelpComponent />} />
         <Route path="applyAddress" element={<ApplyAdddressComponent />} />
         <Route path="applyIdentity" element={<ApplyIdentityComponent />} />
       </Route>
-      <Route exact path={"gramasevaka"} element={<Drawer />}>
-        <Route path="myrequests" element={<GramaRequestsComponent />} />
+      <Route
+        exact
+        path={"gramasevaka"}
+        element={
+          <GramasewakaProtectedRoute>
+            <Drawer />
+          </GramasewakaProtectedRoute>
+        }
+      >
+        <Route index element={<GramaRequestsComponent />} />
         <Route path="help" element={<HelpComponent />} />
       </Route>
       <Route path="/signin" element={<SignIn />} exact />
