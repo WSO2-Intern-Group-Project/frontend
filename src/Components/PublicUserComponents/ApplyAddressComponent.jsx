@@ -1,25 +1,62 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { Button, Card, TextField, Typography } from "@mui/material";
 import AddressImage from "./address.jpeg";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const fullName = "John Doe";
+const email = "john@gmail.com";
 const address = "123, ABC Street, XYZ City, ABC State, 123456";
 
 function ApplyAdddressComponent() {
-    const [reason, setReason] = useState("");
-    const [gnDivision, setGnDivision] = useState("");
+  const [reason, setReason] = useState("");
+  const [gnDivision, setGnDivision] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(reason);
-        console.log(gnDivision);
-        setReason("");
-        setGnDivision("");
-    };
+  const { httpRequest } = useAuthContext();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+      },
+      method: "POST",
+      url: "https://a7bf0dba-d37a-4f74-ab2a-11d52f500ed9-prod.e1-us-east-azure.choreoapis.dev/bhzm/gramasevabackend/endpoint-9090-803/1.0.0/addRequest",
+      attachToken: true,
+      data: {
+        requestType: "Address",
+        requestedBy: fullName,
+        userEmail: email,
+        gnDomain: gnDivision,
+        reason: reason,
+      },
+    })
+      .then((response) => {
+        toast.success("Request Submitted Successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+        console.log(response);
+      })
+      .catch((err) => {
+        toast.error("Request Submission Failed", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+          theme: "dark",
+        });
+        console.error(err);
+      });
+
+    setReason("");
+    setGnDivision("");
+  };
 
   return (
     <>
+    <ToastContainer />
       <Box>
         <Box>
           <Card
