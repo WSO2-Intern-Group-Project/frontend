@@ -8,10 +8,10 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { AuthProvider } from "@asgardeo/auth-react";
 
 const config = {
-  signInRedirectURL: "http://localhost:3000",
+  signInRedirectURL: "http://localhost:3000/",
   signOutRedirectURL: "http://localhost:3000/signin",
-  clientID: "hmfgd0V7TUGkGpHxSAbb12oIlWAa",
-  baseUrl: "https://api.asgardeo.io/t/orgjsd3v",
+  clientID: "gf6s0_2n6hGonrsz3NOX3bTC8Ioa",
+  baseUrl: "https://api.asgardeo.io/t/internprojectgroup5",
   scope: ["openid", "profile","groups"],
   "storage": "sessionStorage"
 };
