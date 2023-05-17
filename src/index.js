@@ -8,14 +8,15 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { AuthProvider } from "@asgardeo/auth-react";
 
 const config = {
-  signInRedirectURL: "http://localhost:3000",
-  signOutRedirectURL: "http://localhost:3000/signin",
+  signInRedirectURL: "http://localhost:3000/roleselect",
+  signOutRedirectURL: "http://localhost:3000",
   clientID: "cUdKTvv88ZNnrd82SJE3reJDSfka",
   baseUrl: "https://api.asgardeo.io/t/internprojectgroup5",
   scope: ["openid", "profile", "groups"],
   storage: "sessionStorage",
   resourceServerURLs: [
     "https://a7bf0dba-d37a-4f74-ab2a-11d52f500ed9-prod.e1-us-east-azure.choreoapis.dev/bhzm/gramasevabackend/endpoint-9090-803/1.0.0",
+    "https://a7bf0dba-d37a-4f74-ab2a-11d52f500ed9-dev.e1-us-east-azure.choreoapis.dev/bhzm/externalapis/endpoint-9090-803/1.0.0",
   ],
 };
 

@@ -10,20 +10,18 @@ import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import LogoutIcon from "@mui/icons-material/Logout";
-import HomeIcon from "@mui/icons-material/Home";
 import { ListItemIcon } from "@mui/material";
-import Footer from "./Footer";
 import logo from "../../assets/logo.png";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { useAuthContext } from "@asgardeo/auth-react";
+import Footer from "../PublicUserComponents/Footer";
 
-
-function Drawer() {
+function GSDrawer() {
   const fullname =
     JSON.parse(window.sessionStorage.getItem("userdata"))["firstName"] +
     " " +
     JSON.parse(window.sessionStorage.getItem("userdata"))["lastName"];
-    
+
   const { signOut, getAccessToken, getDecodedIDToken } = useAuthContext();
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -94,15 +92,6 @@ function Drawer() {
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
             <Box sx={{ flexGrow: 0 }}>
-              <IconButton
-                component={NavLink}
-                to={"/user"}
-                size="large"
-                edge="start"
-                color="inherit"
-              >
-                <HomeIcon />
-              </IconButton>
               <Tooltip title="profile">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <Avatar alt="Remy Sharp" />
@@ -141,4 +130,4 @@ function Drawer() {
     </Box>
   );
 }
-export default Drawer;
+export default GSDrawer;

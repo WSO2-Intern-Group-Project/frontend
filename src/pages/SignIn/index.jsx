@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Box, Typography, Button, useMediaQuery } from "@mui/material";
 import signInLogo from "../../assets/signInLogo.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFacebookF, faGoogle, faLinkedinIn } from "@fortawesome/free-brands-svg-icons";
 import { useNavigate } from "react-router-dom";
 import "./index.css";
 import { useAuthContext } from "@asgardeo/auth-react";
+import LoginIcon from '@mui/icons-material/Login';
 
 
 export default function SignIn() {
   const isMobileScreen = useMediaQuery("(max-width: 767px)");
-  const { state, signIn, signOut } = useAuthContext();
+  const { signIn } = useAuthContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.sessionStorage.removeItem("userdata");
+    window.sessionStorage.removeItem("uid");
+    window.sessionStorage.removeItem("actoken");
+    window.sessionStorage.removeItem("usertype");
+  }, []);
+
 
   return (
     <Box
@@ -31,16 +38,18 @@ export default function SignIn() {
         <Box
           sx={{
             backgroundColor: "rgba(13,24,33,.8)",
-            height: [300, 280],
+            height: [200, 280],
             borderRadius: 5,
             boxShadow: 12,
           }}
           px={[3, 5]}
-          pt={5}>
+          pt={5}
+        >
           <Typography
             variant="h5"
             gutterBottom
-            sx={{ fontWeight: 700, color: "#f0f4ef", fontSize: 24 }}>
+            sx={{ fontWeight: 700, color: "#f0f4ef", fontSize: 24 }}
+          >
             Sign In
           </Typography>
           <Box mb={[8, 6]} />
@@ -49,14 +58,10 @@ export default function SignIn() {
               onClick={() => signIn()}
               fullWidth
               variant="contained"
-              startIcon={
-                <FontAwesomeIcon
-                  icon={faFacebookF}
-                  className="login-icon"
-                  style={{ fontSize: "1.2em", paddingLeft: isMobileScreen ? 0 : 40 }}
-                />
-              }
+              startIcon={<LoginIcon sx={{ pr: 1 }} />}
               sx={{
+                height: 50,
+                width: "60%",
                 borderRadius: 50,
                 backgroundColor: "#2651BE",
                 "&:hover": {
@@ -82,72 +87,7 @@ export default function SignIn() {
                 },
               }}
             >
-              Sign in with facebook
-            </Button>
-            <Box mb={2} />
-            <Button
-              fullWidth
-              color="error"
-              variant="contained"
-              startIcon={
-                <FontAwesomeIcon
-                  icon={faGoogle}
-                  className="login-icon"
-                  style={{ fontSize: "1.2em", paddingLeft: isMobileScreen ? 0 : 40 }}
-                />
-              }
-              sx={{
-                borderRadius: 50,
-                textAlign: "left",
-                "& .MuiButton-startIcon": {
-                  margin: 0,
-                },
-                "@media (min-width: 1024px)": {
-                  fontSize: "0.9rem",
-                  padding: "8px 20px",
-                },
-              }}
-            >
-              Sign in with Google &nbsp;&nbsp;&nbsp;
-            </Button>
-            <Box mb={2} />
-            <Button
-              fullWidth
-              variant="contained"
-              startIcon={
-                <FontAwesomeIcon
-                  icon={faLinkedinIn}
-                  className="login-icon"
-                  style={{ fontSize: "1.2em", paddingLeft: isMobileScreen ? 0 : 40 }}
-                />
-              }
-              sx={{
-                borderRadius: 50,
-                backgroundColor: "#1B6AB2",
-                "&:hover": {
-                  backgroundColor: "#0069d9",
-                  borderColor: "#0062cc",
-                  boxShadow: "none",
-                },
-                "&:active": {
-                  boxShadow: "none",
-                  backgroundColor: "#0062cc",
-                  borderColor: "#005cbf",
-                },
-                "&:focus": {
-                  boxShadow: "0 0 0 0.2rem rgba(0,123,255,.5)",
-                },
-                textAlign: "left",
-                "& .MuiButton-startIcon": {
-                  margin: 0,
-                },
-                "@media (min-width: 1024px)": {
-                  fontSize: "0.9rem",
-                  padding: "8px 20px",
-                },
-              }}
-            >
-              Sign in with linkedin &nbsp;&nbsp;
+              Sign in
             </Button>
           </Box>
         </Box>
@@ -160,12 +100,19 @@ export default function SignIn() {
             alignItems: "center",
             justifyContent: "center",
             width: "100%",
-          }}>
+          }}
+        >
           <Typography variant="body1" sx={{ color: "#eeeeee", fontSize: 15 }}>
             No Account yet?
           </Typography>
-          <Button sx={{ textTransform: "none", color: "#7aa9e9" }}  onClick={() => navigate("/signup")} >
-            <Typography variant="body1" sx={{ fontSize: 15, textDecoration: "underline" }}>
+          <Button
+            sx={{ textTransform: "none", color: "#7aa9e9" }}
+            onClick={() => navigate("/signup")}
+          >
+            <Typography
+              variant="body1"
+              sx={{ fontSize: 15, textDecoration: "underline" }}
+            >
               Sign Up Now
             </Typography>
           </Button>
@@ -188,13 +135,8 @@ export default function SignIn() {
           }}
         >
           <Typography variant="body1" sx={{ color: "#ffffff" }}>
-            No Account yet?
-          </Typography>
-          <Button sx={{ textTransform: "none", color: "#7aa9e9" }} onClick={() => navigate("/signup")}>
-            <Typography variant="body1" sx={{ textDecoration: "underline" }}>
-              Sign Up Now
+              © {new Date().getFullYear()} Grama Seva. All rights reserved.
             </Typography>
-          </Button>
         </Box>
       )}
     </Box>

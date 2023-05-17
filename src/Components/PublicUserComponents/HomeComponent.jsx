@@ -13,6 +13,8 @@ const pages = {
 };
 
 function HomeComponent() {
+
+  console.log(window.sessionStorage.getItem("userdata"));
   return (
     <>
       <Box>

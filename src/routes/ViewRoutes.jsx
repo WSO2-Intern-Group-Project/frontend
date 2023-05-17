@@ -7,18 +7,17 @@ import HelpComponent from "../Components/PublicUserComponents/HelpComponent";
 import HomeComponent from "../Components/PublicUserComponents/HomeComponent";
 import MyRequestsComponent from "../Components/PublicUserComponents/MyRequestsComponnent";
 import SignIn from "../pages/SignIn";
-import SignUp from "../pages/SignUp";
-import RoleSelectPage from "../pages/RoleSelectPage";
 import GramaRequestsComponent from "../Components/GramasevakaComponents/GramaRequestsComponent";
 import PersonalDataComponent from "../pages/PersonalDataComponent";
 import { GramasewakaProtectedRoute } from "./GramasewakaProtectedRoute";
 import { UserProtectedRoute } from "./UserProtectedRote";
 import RoleSelect from "../Components/RoleSelect";
+import GramasevakaDataComponent from "../pages/GramasevakaDataComponent";
+import GSDrawer from "../Components/GramasevakaComponents/Drawer";
 
 const ViewRoutes = () => {
   return (
     <Routes>
-      <Route exact path={"/"} element={<RoleSelect />} />
       <Route
         exact
         path={"user"}
@@ -39,17 +38,21 @@ const ViewRoutes = () => {
         path={"gramasevaka"}
         element={
           <GramasewakaProtectedRoute>
-            <Drawer />
+            <GSDrawer />
           </GramasewakaProtectedRoute>
         }
       >
         <Route index element={<GramaRequestsComponent />} />
         <Route path="help" element={<HelpComponent />} />
       </Route>
-      <Route path="/signin" element={<SignIn />} exact />
-      <Route path="/signup" element={<SignUp />} exact />
+      <Route path="/" element={<SignIn />} exact />
+      <Route exact path={"/roleselect"} element={<RoleSelect />} />
       <Route path="/personalData" element={<PersonalDataComponent />} exact />
-      <Route path="/role-select" element={<RoleSelectPage />} exact />
+      <Route
+        path="/gramasevakaData"
+        element={<GramasevakaDataComponent />}
+        exact
+      />
     </Routes>
   );
 };

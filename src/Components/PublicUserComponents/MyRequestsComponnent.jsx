@@ -20,71 +20,13 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import InfoIcon from "@mui/icons-material/Info";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-
-const requests = {
-  1: {
-    id: 1,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-  },
-  2: {
-    id: 2,
-    name: "Jane Doe",
-    type: "Identity Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Rejected",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-  },
-  3: {
-    id: 3,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/02/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Completed",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-  },
-  4: {
-    id: 4,
-    name: "Jane Doe",
-    type: "Identity Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-  },
-  5: {
-    id: 5,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "NeedMoreInfo",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-  },
-  6: {
-    id: 6,
-    name: "John Doe",
-    type: "Identity Certificate",
-    date: "12/09/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-  },
-};
+import { requestsByUserAPIUrl } from "../../Utils/endpoints";
+import { useAuthContext } from "@asgardeo/auth-react";
 
 function MyRequestsComponent() {
+  const userdata = JSON.parse(window.sessionStorage.getItem("userdata"));
+  const email = userdata["email"];
+
   const [displayedRequests, setDisplayedRequests] = useState({});
   const [open, setOpen] = useState(false);
   const [filteredTypes, setFilteredTypes] = useState([]);
@@ -93,6 +35,34 @@ function MyRequestsComponent() {
   const [filteredRequests, setFilteredRequests] = useState({});
   const [openPreview, setOpenPreview] = useState(false);
   const [selectedReq, setSelectedReq] = useState(null);
+  const [requests, setRequests] = useState({});
+
+  const {httpRequest} = useAuthContext();
+
+  useEffect(() => {
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+      },
+      method: "GET",
+      url: requestsByUserAPIUrl + "?userEmail=" + email,
+      attachToken: true,
+    })
+      .then((data) => {
+        let requests = {};
+        data.data.map((request, key) => {
+          let k = key + 1;
+          requests[k] = request;
+        });
+        setDisplayedRequests(
+          Object.fromEntries(Object.entries(requests).slice(0, 5))
+        );
+        setRequests(requests);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function handleClose() {
     setOpen(false);
@@ -106,8 +76,8 @@ function MyRequestsComponent() {
     const filteredRequests = Object.fromEntries(
       Object.entries(requests).filter(([id, request]) => {
         if (
-          filteredTypes.includes(request.type) &&
-          filteredStatuses.includes(request.status)
+          filteredTypes.includes(request.requestType) &&
+          filteredStatuses.includes(request.overallStatus)
         ) {
           return true;
         }
@@ -121,12 +91,6 @@ function MyRequestsComponent() {
     setFiltered(true);
     handleClose();
   }
-
-  useEffect(() => {
-    setDisplayedRequests(
-      Object.fromEntries(Object.entries(requests).slice(0, 5))
-    );
-  }, []);
 
   function selectIcon(status) {
     switch (status) {
@@ -155,7 +119,7 @@ function MyRequestsComponent() {
               multiple
               filterSelectedOptions
               id="combo-box-demo"
-              options={["Address Certificate", "Identity Certificate"]}
+              options={["Address", "Identity"]}
               getOptionLabel={(option) => option}
               renderTags={(value, getTagProps) =>
                 value.map((option, index) => (
@@ -242,14 +206,14 @@ function MyRequestsComponent() {
         }}
         fullWidth
       >
-        <DialogTitle>{selectedReq?.type}</DialogTitle>
+        <DialogTitle>{selectedReq?.requestType}</DialogTitle>
         <DialogContent>
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               <b>Name</b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.name}
+              {selectedReq?.requestedBy}
             </Typography>
           </Box>
           <Box sx={{ mb: 3 }}>
@@ -257,7 +221,7 @@ function MyRequestsComponent() {
               <b>Applied Date</b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.date}
+              {selectedReq?.requestedDate}
             </Typography>
           </Box>
           <Box sx={{ mb: 3 }}>
@@ -265,30 +229,28 @@ function MyRequestsComponent() {
               <b>Status</b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.status}
+              {selectedReq?.overallStatus}
             </Typography>
           </Box>
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               <b>
-                {selectedReq?.type === "Address Certificate"
-                  ? "Address"
-                  : "NIC"}
+                {selectedReq?.requestType === "Address" ? "Address" : "NIC"}
               </b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.type === "Address Certificate"
+              {selectedReq?.requestType === "Address"
                 ? selectedReq?.address
                 : selectedReq?.nic}
             </Typography>
           </Box>
-          {selectedReq?.type === "Address Certificate" && (
+          {selectedReq?.requestType === "Address" && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                <b>Grama Niladari Division</b>
+                <b>Grama Niladari Domain</b>
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                {selectedReq?.gsDivision}
+                {selectedReq?.gnDomain}
               </Typography>
             </Box>
           )}
@@ -398,10 +360,10 @@ function MyRequestsComponent() {
                       fontWeight: 700,
                     }}
                   >
-                    {displayedRequests[request].type}
+                    {displayedRequests[request].requestType} Certificate
                   </Typography>
                   <Typography variant="caption">
-                    {displayedRequests[request].date}
+                    {displayedRequests[request].requestedDate}
                   </Typography>
                 </Box>
                 <Box
@@ -411,9 +373,9 @@ function MyRequestsComponent() {
                     alignItems: "end",
                   }}
                 >
-                  {selectIcon(displayedRequests[request].status)}
+                  {selectIcon(displayedRequests[request].overallStatus)}
                   <Typography variant="body1">
-                    {displayedRequests[request].status}
+                    {displayedRequests[request].overallStatus}
                   </Typography>
                 </Box>
               </Card>

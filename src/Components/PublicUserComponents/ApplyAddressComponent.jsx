@@ -6,13 +6,17 @@ import { useAuthContext } from "@asgardeo/auth-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const fullName = "John Doe";
-const email = "john@gmail.com";
-const address = "123, ABC Street, XYZ City, ABC State, 123456";
 
 function ApplyAdddressComponent() {
+  const userdata = JSON.parse(window.sessionStorage.getItem("userdata"));
+  const fullName = userdata["firstName"] + " " + userdata["lastName"];
+  const email = userdata["email"];
+  const address = userdata["address"];
+  const nic = userdata["nic"];
+  const gnDomain = userdata["gnDomain"];
+  
   const [reason, setReason] = useState("");
-  const [gnDivision, setGnDivision] = useState("");
+  
 
   const { httpRequest } = useAuthContext();
 
@@ -29,8 +33,10 @@ function ApplyAdddressComponent() {
         requestType: "Address",
         requestedBy: fullName,
         userEmail: email,
-        gnDomain: gnDivision,
+        gnDomain: gnDomain,
         reason: reason,
+        address: address,
+        nic: nic,
       },
     })
       .then((response) => {
@@ -51,7 +57,6 @@ function ApplyAdddressComponent() {
       });
 
     setReason("");
-    setGnDivision("");
   };
 
   return (
@@ -106,21 +111,6 @@ function ApplyAdddressComponent() {
                     width: "100%",
                   }}
                 >
-                  <TextField
-                    required
-                    id="outlined-basic"
-                    label="Grama Niladhari Division"
-                    color="secondary"
-                    variant="filled"
-                    sx={{
-                      width: "100%",
-                      mb: 2,
-                      backgroundColor: "primary.light",
-                      borderRadius: 3,
-                    }}
-                    value={gnDivision}
-                    onChange={(e) => setGnDivision(e.target.value)}
-                  />
                   <TextField
                     id="outlined-basic"
                     label="Reason"

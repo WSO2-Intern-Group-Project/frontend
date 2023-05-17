@@ -7,16 +7,10 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function PersonalDataComponent() {
+export default function GramasevakaDataComponent() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [birthDate, setBirthDate] = useState("");
-  const [nic, setNic] = useState("");
-  const [gender, setGender] = useState("");
-  const [address, setAddress] = useState("");
-  const [email, setEmail] = useState("");
-  const [mobileNumber, setMobileNumber] = useState("");
   const [gnDivision, setGnDivision] = useState("");
 
   const { httpRequest } = useAuthContext();
@@ -34,12 +28,12 @@ export default function PersonalDataComponent() {
         id: window.sessionStorage.getItem("uid"),
         firstName: firstName,
         lastName: lastName,
-        birthDate: birthDate,
-        nic: nic,
-        gender: gender,
-        address: address,
-        email: email,
-        mobileNumber: mobileNumber,
+        birthDate: "",
+        nic: "",
+        gender: "",
+        address: "",
+        email: "",
+        mobileNumber: "",
         gnDomain: gnDivision,
       },
       attachToken: true,
@@ -56,16 +50,9 @@ export default function PersonalDataComponent() {
             id: window.sessionStorage.getItem("uid"),
             firstName: firstName,
             lastName: lastName,
-            birthDate: birthDate,
-            nic: nic,
-            gender: gender,
-            address: address,
-            email: email,
-            mobileNumber: mobileNumber,
-            gnDomain: gnDivision,
           })
         );
-        navigate("/user");
+        navigate("/gramasevaka");
       })
       .catch((err) => {
         toast.error("Error adding personal data", {
@@ -136,107 +123,6 @@ export default function PersonalDataComponent() {
               color="secondary"
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="Date of Birth"
-              variant="filled"
-              size="small"
-              fullWidth
-              required
-              type="date"
-              color="secondary"
-              {...{
-                InputLabelProps: { shrink: true },
-              }}
-              value={birthDate}
-              onChange={(e) => setBirthDate(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="NIC"
-              variant="filled"
-              fullWidth
-              required
-              size="small"
-              color="secondary"
-              value={nic}
-              onChange={(e) => setNic(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="Gender"
-              variant="filled"
-              fullWidth
-              required
-              size="small"
-              color="secondary"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="Address"
-              variant="filled"
-              fullWidth
-              size="small"
-              required
-              color="secondary"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="Email"
-              variant="filled"
-              fullWidth
-              size="small"
-              required
-              color="secondary"
-              type={"email"}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              sx={{
-                mb: 2,
-                backgroundColor: "primary.light",
-                borderTopLeftRadius: 10,
-                borderTopRightRadius: 10,
-              }}
-            />
-            <TextField
-              label="Mobile Number"
-              variant="filled"
-              fullWidth
-              required
-              color="secondary"
-              size="small"
-              value={mobileNumber}
-              onChange={(e) => setMobileNumber(e.target.value)}
               sx={{
                 mb: 2,
                 backgroundColor: "primary.light",

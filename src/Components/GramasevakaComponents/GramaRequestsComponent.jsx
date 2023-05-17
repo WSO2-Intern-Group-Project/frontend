@@ -15,121 +15,30 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import PendingIcon from '@mui/icons-material/Pending';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import PendingIcon from "@mui/icons-material/Pending";
 import CancelIcon from "@mui/icons-material/Cancel";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
-// dummy data
-const requests = {
-  1: {
-    id: 1,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-    identityCheck: true,
-    addressCheck: false,
-    policeCheck: false,
-  },
-  2: {
-    id: 2,
-    name: "Jane Doe",
-    type: "Identity Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Rejected",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-    identityCheck: true,
-    addressCheck: true,
-    policeCheck: false,
-  },
-  3: {
-    id: 3,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/02/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Completed",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-    identityCheck: true,
-    addressCheck: true,
-    policeCheck: true,
-  },
-  4: {
-    id: 4,
-    name: "Jane Doe",
-    type: "Identity Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-    identityCheck: false,
-    addressCheck: false,
-    policeCheck: false,
-  },
-  5: {
-    id: 5,
-    name: "John Doe",
-    type: "Address Certificate",
-    date: "12/12/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "NeedMoreInfo",
-    reason: "This is a sample reason, This is a sample reason",
-    gsDivision: "ABC",
-    identityCheck: true,
-    addressCheck: true,
-    policeCheck: false,
-  },
-  6: {
-    id: 6,
-    name: "John Doe",
-    type: "Identity Certificate",
-    date: "12/09/2021",
-    address: "123, ABC Street, XYZ City",
-    status: "Pending",
-    reason: "This is a sample reason, This is a sample reason",
-    nic: "123456789V",
-    identityCheck: true,
-    addressCheck: true,
-    policeCheck: false,
-  },
-};
-
-const sampleIdentityAPIResponse = {
-  nic: '123456789V',
-  name: 'John Doe',
-  gender: 'Male',
-  date_of_birth: '1998-10-10',
-  place_of_birth: 'Colombo',
-  occupation: 'Student',
-  address: 'No. 123, Galle Road, Colombo 03',
-}
-
-const sampleAddressAPIResponse = [
-  'John Doe',
-  'Jane Doe',
-  'Jack Doe',
-  'Jill Doe',
-]
-
-const samplePoliceAPIResponse = [
-  '6 months in county jail',
-  '2 years of probation and restitution payment',
-  '3 years in state prison',
-]
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import {
+  addressCheckAPIUrl,
+  identityCheckAPIUrl,
+  policeCheckAPIUrl,
+  requestsByDomainAPIUrl,
+  setStatusOfRequest,
+} from "../../Utils/endpoints";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const GramaRequestsComponent = () => {
+  const gnDomain = JSON.parse(window.sessionStorage.getItem("userdata"))[
+    "gnDomain"
+  ];
+
   const [displayedRequests, setDisplayedRequests] = useState({});
   const [open, setOpen] = useState(false);
   const [filteredTypes, setFilteredTypes] = useState([]);
@@ -142,23 +51,51 @@ const GramaRequestsComponent = () => {
 
   const [changedStatus, setChangedStatus] = useState({
     reqId: selectedReq?.id,
-    status: selectedReq?.status
+    status: selectedReq?.overallStatus,
   });
   const [identityCheckAccordian, setIdentityCheckAccordian] = useState(false);
   const [identityCheckDetails, setIdentityCheckDetails] = useState({
     set: false,
-    response: null
+    response: null,
   });
   const [addressCheckAccordian, setAddressCheckAccordian] = useState(false);
   const [addressCheckDetails, setAddressCheckDetails] = useState({
     set: false,
-    response: null
+    response: null,
   });
   const [policeCheckAccordian, setPoliceCheckAccordian] = useState(false);
   const [policeCheckDetails, setPoliceCheckDetails] = useState({
     set: false,
-    response: null
+    response: null,
   });
+
+  const [requests, setRequests] = useState({});
+  const { httpRequest } = useAuthContext();
+
+  useEffect(() => {
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+      },
+      method: "GET",
+      url: requestsByDomainAPIUrl + "?gnDomain=" + gnDomain,
+      attachToken: true,
+    })
+      .then((data) => {
+        let requests = {};
+        data.data.map((request, key) => {
+          let k = key + 1;
+          requests[k] = request;
+        });
+        setDisplayedRequests(
+          Object.fromEntries(Object.entries(requests).slice(0, 5))
+        );
+        setRequests(requests);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   function handleClose() {
     setOpen(false);
@@ -172,8 +109,8 @@ const GramaRequestsComponent = () => {
     const filteredRequests = Object.fromEntries(
       Object.entries(requests).filter(([id, request]) => {
         if (
-          filteredTypes.includes(request.type) &&
-          filteredStatuses.includes(request.status)
+          filteredTypes.includes(request.requestType) &&
+          filteredStatuses.includes(request.overallStatus)
         ) {
           return true;
         }
@@ -187,12 +124,6 @@ const GramaRequestsComponent = () => {
     setFiltered(true);
     handleClose();
   }
-
-  useEffect(() => {
-    setDisplayedRequests(
-      Object.fromEntries(Object.entries(requests).slice(0, 5))
-    );
-  }, []);
 
   function selectIcon(status) {
     switch (status) {
@@ -213,13 +144,23 @@ const GramaRequestsComponent = () => {
     setIdentityCheckAccordian(!identityCheckAccordian);
     if (!identityCheckAccordian) {
       if (!identityCheckDetails.set) {
-        //backendCall to get details from external API
-        console.log("backend call");
-        setIdentityCheckDetails({
-          set: true,
-          response: sampleIdentityAPIResponse
-        }
-        )
+        httpRequest({
+          headers: {
+            Accept: "application/json",
+          },
+          method: "GET",
+          url: identityCheckAPIUrl + "?NIC=" + selectedReq.nic,
+          attachToken: true,
+        })
+          .then((data) => {
+            setIdentityCheckDetails({
+              set: true,
+              response: data.data,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }
@@ -228,13 +169,29 @@ const GramaRequestsComponent = () => {
     setAddressCheckAccordian(!addressCheckAccordian);
     if (!addressCheckAccordian) {
       if (!addressCheckDetails.set) {
-        //backendCall to get details from external API
-        console.log("backend call");
-        setAddressCheckDetails({
-          set: true,
-          response: sampleAddressAPIResponse
-        }
-        )
+        httpRequest({
+          headers: {
+            Accept: "application/json",
+          },
+          method: "POST",
+          url: addressCheckAPIUrl,
+          attachToken: true,
+          data: {
+            address: selectedReq.address,
+          },
+        })
+          .then((data) => {
+            const newdata = Object.keys(data.data).map((k) => {
+              return data.data[k].name + " - " + data.data[k].NIC;
+            });
+            setAddressCheckDetails({
+              set: true,
+              response: newdata,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }
@@ -243,74 +200,209 @@ const GramaRequestsComponent = () => {
     setPoliceCheckAccordian(!policeCheckAccordian);
     if (!policeCheckAccordian) {
       if (!policeCheckDetails.set) {
-        //backendCall to get details from external API
-        console.log("backend call");
-        setPoliceCheckDetails({
-          set: true,
-          response: samplePoliceAPIResponse
-        }
-        )
+        httpRequest({
+          headers: {
+            Accept: "application/json",
+          },
+          method: "GET",
+          url: policeCheckAPIUrl + "?NIC=" + selectedReq.nic,
+          attachToken: true,
+        })
+          .then((data) => {
+            console.log(data);
+            const newdata = Object.keys(data.data).map((k) => {
+              return data.data[k].description;
+            });
+            setPoliceCheckDetails({
+              set: true,
+              response: newdata,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
   }
 
-
-
   function handleIdentityCheckDecline() {
-    setSelectedReq({
-      ...selectedReq,
-      identityCheck: false,
-    })
-    // backend call to update the status
+    const copy = { ...selectedReq };
+    copy.identityCheck = false;
+    copy.identityVerificationStatus = false;
+    setSelectedReq(copy);
 
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
+    })
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
   function handleIdentityCheckApprove() {
-    setSelectedReq({
-      ...selectedReq,
-      identityCheck: true,
+    const copy = { ...selectedReq };
+    copy.identityCheck = true;
+    copy.identityVerificationStatus = true;
+    setSelectedReq(copy);
+    console.log(copy);
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
     })
-    // backend call to update the status
-
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   function handleAddressCheckDecline() {
-    setSelectedReq({
-      ...selectedReq,
-      addressCheck: false,
+    const copy = { ...selectedReq };
+    copy.addressCheck = false;
+    copy.addressVerificationStatus = false;
+    setSelectedReq(copy);
+
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
     })
-    // backend call to update the status
-    
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
   function handleAddressCheckApprove() {
-    setSelectedReq({
-      ...selectedReq,
-      addressCheck: true,
-    })
-    // backend call to update the status
+    const copy = { ...selectedReq };
+    copy.addressCheck = true;
+    copy.addressVerificationStatus = true;
+    setSelectedReq(copy);
 
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
+    })
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
 
   function handlePoliceCheckDecline() {
     setSelectedReq({
       ...selectedReq,
       policeCheck: false,
-    })
-    // backend call to update the status
+    });
+    const copy = { ...selectedReq };
+    copy.policeCheck = false;
+    copy.policeVerificationStatus = false;
+    setSelectedReq(copy);
 
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
+    })
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
   function handlePoliceCheckApprove() {
-    setSelectedReq({
-      ...selectedReq,
-      policeCheck: true,
+    const copy = { ...selectedReq };
+    copy.policeCheck = true;
+    copy.policeVerificationStatus = true;
+    setSelectedReq(copy);
+
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      url: setStatusOfRequest,
+      data: copy,
+      attachToken: true,
     })
-    // backend call to update the status
-
+      .then((data) => {
+        console.log(data);
+        toast.success("Status updated successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+      });
   }
-
-
 
   return (
     <>
+      <ToastContainer />
       {/* filter Dialog Box*/}
       <Dialog open={open} onClose={handleClose} fullWidth>
         <DialogTitle>Filter Requests</DialogTitle>
@@ -366,18 +458,18 @@ const GramaRequestsComponent = () => {
         open={openPreview}
         onClose={() => {
           setOpenPreview(false);
-          //TODO: save the changed status to backend 
+          //TODO: save the changed status to backend
         }}
         fullWidth
       >
-        <DialogTitle>{selectedReq?.type}</DialogTitle>
+        <DialogTitle>{selectedReq?.requestType}</DialogTitle>
         <DialogContent>
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               <b>Name</b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.name}
+              {selectedReq?.requestedBy}
             </Typography>
           </Box>
           <Box sx={{ mb: 3 }}>
@@ -385,16 +477,16 @@ const GramaRequestsComponent = () => {
               <b>Applied Date</b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.date}
+              {selectedReq?.requestedDate}
             </Typography>
           </Box>
-          <Box sx={{ mb: 3, display: 'flex', gap: 3 }}>
+          <Box sx={{ mb: 3, display: "flex", gap: 3 }}>
             <Box>
               <Typography variant="body1" sx={{ fontWeight: 700 }}>
                 <b>Status</b>
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                {selectedReq?.status}
+                {selectedReq?.overallStatus}
               </Typography>
             </Box>
             <Box>
@@ -405,11 +497,10 @@ const GramaRequestsComponent = () => {
                 id="combo-box-demo"
                 value={changedStatus.status}
                 onChange={(event) => {
-                  setChangedStatus(
-                    {
-                      reqId: selectedReq?.id,
-                      status: event.target.value
-                    });
+                  setChangedStatus({
+                    reqId: selectedReq?.id,
+                    status: event.target.value,
+                  });
                 }}
                 sx={{ width: 200 }}
               >
@@ -423,24 +514,22 @@ const GramaRequestsComponent = () => {
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               <b>
-                {selectedReq?.type === "Address Certificate"
-                  ? "Address"
-                  : "NIC"}
+                {selectedReq?.requestType === "Address" ? "Address" : "NIC"}
               </b>
             </Typography>
             <Typography variant="body1" sx={{ fontWeight: 400 }}>
-              {selectedReq?.type === "Address Certificate"
+              {selectedReq?.requestType === "Address"
                 ? selectedReq?.address
                 : selectedReq?.nic}
             </Typography>
           </Box>
-          {selectedReq?.type === "Address Certificate" && (
+          {selectedReq?.requestType === "Address" && (
             <Box sx={{ mb: 3 }}>
               <Typography variant="body1" sx={{ fontWeight: 700 }}>
                 <b>Grama Niladari Division</b>
               </Typography>
               <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                {selectedReq?.gsDivision}
+                {selectedReq?.gnDomain}
               </Typography>
             </Box>
           )}
@@ -459,7 +548,10 @@ const GramaRequestsComponent = () => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>Identity Check : {selectedReq?.identityCheck ? 'Verified' : 'Not Verified'}</Typography>
+                <Typography>
+                  Identity Check :{" "}
+                  {selectedReq?.identityCheck ? "Verified" : "Not Verified"}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body1" sx={{ fontWeight: 700 }}>
@@ -473,10 +565,11 @@ const GramaRequestsComponent = () => {
                   <b>Gender:</b> {identityCheckDetails.response?.gender}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                  <b>Date of Birth:</b> {identityCheckDetails.response?.date_of_birth}
+                  <b>Date of Birth:</b> {identityCheckDetails.response?.DoB}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                  <b>Place of Birth:</b> {identityCheckDetails.response?.place_of_birth}
+                  <b>Place of Birth:</b>{" "}
+                  {identityCheckDetails.response?.placeOfBirth}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 400 }}>
                   <b>Occupation:</b> {identityCheckDetails.response?.occupation}
@@ -485,11 +578,25 @@ const GramaRequestsComponent = () => {
                   <b>Address:</b> {identityCheckDetails.response?.address}
                 </Typography>
 
-                <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
-                  <Button variant="outlined" color="error" onClick={handleIdentityCheckDecline}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    mt: 3,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleIdentityCheckDecline}
+                  >
                     Decline
                   </Button>
-                  <Button variant="outlined" color="success" onClick={handleIdentityCheckApprove}>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={handleIdentityCheckApprove}
+                  >
                     Approve
                   </Button>
                 </Box>
@@ -502,7 +609,10 @@ const GramaRequestsComponent = () => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>Address Check : {selectedReq?.addressCheck ? 'Verified' : 'Not Verified'}</Typography>
+                <Typography>
+                  Address Check :{" "}
+                  {selectedReq?.addressCheck ? "Verified" : "Not Verified"}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body1" sx={{ fontWeight: 700 }}>
@@ -514,16 +624,34 @@ const GramaRequestsComponent = () => {
                 </Typography>
 
                 {addressCheckDetails.response?.map((resident, index) => (
-                <Typography variant="body1" sx={{ fontWeight: 400 }} key={index}>
-                  {resident}
-                </Typography>
-                  ))}
+                  <Typography
+                    variant="body1"
+                    sx={{ fontWeight: 400 }}
+                    key={index}
+                  >
+                    {resident}
+                  </Typography>
+                ))}
 
-                <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
-                  <Button variant="outlined" color="error" onClick={handleAddressCheckDecline}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    mt: 3,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handleAddressCheckDecline}
+                  >
                     Decline
                   </Button>
-                  <Button variant="outlined" color="success" onClick={handleAddressCheckApprove}>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={handleAddressCheckApprove}
+                  >
                     Approve
                   </Button>
                 </Box>
@@ -536,7 +664,10 @@ const GramaRequestsComponent = () => {
                 aria-controls="panel1a-content"
                 id="panel1a-header"
               >
-                <Typography>Police Check : {selectedReq?.policeCheck ? 'Verified' : 'Not Verified'}</Typography>
+                <Typography>
+                  Police Check :{" "}
+                  {selectedReq?.policeCheck ? "Verified" : "Not Verified"}
+                </Typography>
               </AccordionSummary>
               <AccordionDetails>
                 <Typography variant="body1" sx={{ fontWeight: 700 }}>
@@ -548,22 +679,39 @@ const GramaRequestsComponent = () => {
                 </Typography>
 
                 {policeCheckDetails.response?.map((record, index) => (
-                <Typography variant="body1" sx={{ fontWeight: 400 }} key={index}>
-                  {record}
-                </Typography>
-                  ))}
+                  <Typography
+                    variant="body1"
+                    sx={{ fontWeight: 400 }}
+                    key={index}
+                  >
+                    {record}
+                  </Typography>
+                ))}
 
-                <Box sx={{ display: "flex", justifyContent: "space-around", mt: 3 }}>
-                  <Button variant="outlined" color="error" onClick={handlePoliceCheckDecline}>
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-around",
+                    mt: 3,
+                  }}
+                >
+                  <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={handlePoliceCheckDecline}
+                  >
                     Decline
                   </Button>
-                  <Button variant="outlined" color="success" onClick={handlePoliceCheckApprove}>
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={handlePoliceCheckApprove}
+                  >
                     Approve
                   </Button>
                 </Box>
               </AccordionDetails>
             </Accordion>
-
           </Box>
         </DialogContent>
         <DialogActions sx={{ display: "flex", justifyContent: "end" }}>
@@ -653,7 +801,7 @@ const GramaRequestsComponent = () => {
                 onClick={() => {
                   setChangedStatus({
                     reqId: displayedRequests[request].id,
-                    status: displayedRequests[request].status,
+                    status: displayedRequests[request].overallStatus,
                   });
                   setSelectedReq(displayedRequests[request]);
                   setOpenPreview(true);
@@ -666,10 +814,10 @@ const GramaRequestsComponent = () => {
                       fontWeight: 700,
                     }}
                   >
-                    {displayedRequests[request].type}
+                    {displayedRequests[request].requestType}
                   </Typography>
                   <Typography variant="caption">
-                    {displayedRequests[request].name}
+                    {displayedRequests[request].requestedBy}
                   </Typography>
                 </Box>
                 <Box
@@ -679,9 +827,9 @@ const GramaRequestsComponent = () => {
                     alignItems: "end",
                   }}
                 >
-                  {selectIcon(displayedRequests[request].status)}
+                  {selectIcon(displayedRequests[request].overallStatus)}
                   <Typography variant="body1">
-                    {displayedRequests[request].status}
+                    {displayedRequests[request].overallStatus}
                   </Typography>
                 </Box>
               </Card>
@@ -709,7 +857,7 @@ const GramaRequestsComponent = () => {
         </Box>
       </Box>
     </>
-  )
+  );
 };
 
 export default GramaRequestsComponent;

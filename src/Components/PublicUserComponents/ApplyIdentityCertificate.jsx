@@ -1,22 +1,64 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
 import { Button, Card, TextField, Typography } from "@mui/material";
 import IdentityImage from "./nic.jpg";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const fullName = "John Doe";
-const nic = "123456789V";
 
 function ApplyIdentityComponent() {
-    const [reason, setReason] = useState("");
+  const userdata = JSON.parse(window.sessionStorage.getItem("userdata"));
+  const fullName = userdata["firstName"] + " " + userdata["lastName"];
+  const email = userdata["email"];
+  const nic = userdata["nic"];
+  const address = userdata["address"];
+  const gnDomain = userdata["gnDomain"];
+  const [reason, setReason] = useState("");
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(reason);
-        setReason("");
-    }
+  const { httpRequest } = useAuthContext();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+      },
+      method: "POST",
+      url: "https://a7bf0dba-d37a-4f74-ab2a-11d52f500ed9-prod.e1-us-east-azure.choreoapis.dev/bhzm/gramasevabackend/endpoint-9090-803/1.0.0/addRequest",
+      attachToken: true,
+      data: {
+        requestType: "Identity",
+        requestedBy: fullName,
+        userEmail: email,
+        reason: reason,
+        address: address,
+        gnDomain: gnDomain,
+        nic: nic,
+      },
+    })
+      .then((response) => {
+        toast.success("Request Submitted Successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+        console.log(response);
+      })
+      .catch((err) => {
+        toast.error("Request Submission Failed", {
+          position: toast.POSITION.TOP_CENTER,
+          autoClose: 5000,
+          theme: "dark",
+        });
+        console.error(err);
+      });
+    setReason("");
+  };
 
   return (
     <>
+      <ToastContainer />
       <Box>
         <Box>
           <Card

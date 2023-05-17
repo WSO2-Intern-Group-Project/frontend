@@ -7,7 +7,7 @@ export const UserProtectedRoute = ({ children }) => {
   const authed = state.isAuthenticated;
 
   if (authed) {
-    if (!getAccessToken().groups) {
+    if (window.sessionStorage.getItem("usertype") === "user") {
       return children;
     } else {
       return <Navigate to={"/user"} />;
