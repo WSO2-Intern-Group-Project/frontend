@@ -1,9 +1,0 @@
-.login-icon {
-  margin-left: -40px;
-}
-
-@media (min-width: 1024px) {
-  .login-icon {
-    margin-left: -200px;
-  }
-}
