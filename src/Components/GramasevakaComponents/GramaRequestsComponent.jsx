@@ -227,7 +227,8 @@ const GramaRequestsComponent = () => {
 
   function handleIdentityCheckDecline() {
     const copy = { ...selectedReq };
-    copy.identityVerificationStatus = false;
+    copy.identityVerificationStatus = true;
+    copy.identityVerified = false;
     setSelectedReq(copy);
 
     httpRequest({
@@ -255,6 +256,7 @@ const GramaRequestsComponent = () => {
   function handleIdentityCheckApprove() {
     const copy = { ...selectedReq };
     copy.identityVerificationStatus = true;
+    copy.identityVerified = true;
     setSelectedReq(copy);
     console.log(copy);
     httpRequest({
@@ -282,7 +284,8 @@ const GramaRequestsComponent = () => {
 
   function handleAddressCheckDecline() {
     const copy = { ...selectedReq };
-    copy.addressVerificationStatus = false;
+    copy.addressVerificationStatus = true;
+    copy.addressVerified = false;
     setSelectedReq(copy);
 
     httpRequest({
@@ -310,6 +313,7 @@ const GramaRequestsComponent = () => {
   function handleAddressCheckApprove() {
     const copy = { ...selectedReq };
     copy.addressVerificationStatus = true;
+    copy.addressVerified = true;
     setSelectedReq(copy);
 
     httpRequest({
@@ -340,7 +344,8 @@ const GramaRequestsComponent = () => {
       ...selectedReq
     });
     const copy = { ...selectedReq };
-    copy.policeVerificationStatus = false;
+    copy.policeVerificationStatus = true;
+    copy.policeVerified = false;
     setSelectedReq(copy);
 
     httpRequest({
@@ -368,6 +373,7 @@ const GramaRequestsComponent = () => {
   function handlePoliceCheckApprove() {
     const copy = { ...selectedReq };
     copy.policeVerificationStatus = true;
+    copy.policeVerified = true;
     setSelectedReq(copy);
 
     httpRequest({
@@ -543,7 +549,7 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Identity Check :{" "}
-                  {selectedReq?.identityVerificationStatus ? "Verified" : "Not Verified"}
+                  {selectedReq?.identityVerificationStatus ? (selectedReq?.identityVerified ? "Approved" : "Declined") : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -578,6 +584,7 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
+                  { !selectedReq?.identityVerificationStatus && <Box>
                   <Button
                     variant="outlined"
                     color="error"
@@ -592,6 +599,7 @@ const GramaRequestsComponent = () => {
                   >
                     Approve
                   </Button>
+                  </Box>}
                 </Box>
               </AccordionDetails>
             </Accordion>
@@ -604,7 +612,7 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Address Check :{" "}
-                  {selectedReq?.addressVerificationStatus ? "Verified" : "Not Verified"}
+                  {selectedReq?.addressVerificationStatus ? (selectedReq?.addressVerified ? "Approved" : "Declined") : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -633,6 +641,7 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
+                  { !selectedReq?.addressVerificationStatus && <Box>
                   <Button
                     variant="outlined"
                     color="error"
@@ -647,6 +656,7 @@ const GramaRequestsComponent = () => {
                   >
                     Approve
                   </Button>
+                  </Box>}
                 </Box>
               </AccordionDetails>
             </Accordion>
@@ -659,7 +669,7 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Police Check :{" "}
-                  {selectedReq?.policeVerificationStatus ? "Verified" : "Not Verified"}
+                  {selectedReq?.policeVerificationStatus ? (selectedReq?.policeVerified ? "Approved" : "Declined") : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -688,6 +698,7 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
+                  { !selectedReq?.policeVerificationStatus && <Box>
                   <Button
                     variant="outlined"
                     color="error"
@@ -702,6 +713,7 @@ const GramaRequestsComponent = () => {
                   >
                     Approve
                   </Button>
+                  </Box>}
                 </Box>
               </AccordionDetails>
             </Accordion>
