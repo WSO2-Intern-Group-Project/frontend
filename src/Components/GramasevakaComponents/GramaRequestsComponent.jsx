@@ -48,6 +48,8 @@ const GramaRequestsComponent = () => {
   const [filteredRequests, setFilteredRequests] = useState({});
   const [openPreview, setOpenPreview] = useState(false);
   const [selectedReq, setSelectedReq] = useState(null);
+  const [selectedRid, setSelectedRid] = useState("");
+  const [req, setReq] = useState(null);
 
   const [changedStatus, setChangedStatus] = useState({
     reqId: selectedReq?.id,
@@ -209,7 +211,6 @@ const GramaRequestsComponent = () => {
           attachToken: true,
         })
           .then((data) => {
-            console.log(data);
             const newdata = Object.keys(data.data).map((k) => {
               return data.data[k].description;
             });
@@ -230,56 +231,19 @@ const GramaRequestsComponent = () => {
     copy.identityVerificationStatus = true;
     copy.identityVerified = false;
     setSelectedReq(copy);
-
-    httpRequest({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      url: setStatusOfRequest,
-      data: copy,
-      attachToken: true,
-    })
-      .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          theme: "dark",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
   }
+
   function handleIdentityCheckApprove() {
     const copy = { ...selectedReq };
     copy.identityVerificationStatus = true;
     copy.identityVerified = true;
     setSelectedReq(copy);
-    console.log(copy);
-    httpRequest({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      url: setStatusOfRequest,
-      data: copy,
-      attachToken: true,
-    })
-      .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          theme: "dark",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
   }
 
   function handleAddressCheckDecline() {
@@ -287,95 +251,42 @@ const GramaRequestsComponent = () => {
     copy.addressVerificationStatus = true;
     copy.addressVerified = false;
     setSelectedReq(copy);
-
-    httpRequest({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      url: setStatusOfRequest,
-      data: copy,
-      attachToken: true,
-    })
-      .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          theme: "dark",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
   }
+
   function handleAddressCheckApprove() {
     const copy = { ...selectedReq };
     copy.addressVerificationStatus = true;
     copy.addressVerified = true;
     setSelectedReq(copy);
-
-    httpRequest({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      url: setStatusOfRequest,
-      data: copy,
-      attachToken: true,
-    })
-      .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          theme: "dark",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
   }
 
   function handlePoliceCheckDecline() {
-    setSelectedReq({
-      ...selectedReq
-    });
     const copy = { ...selectedReq };
     copy.policeVerificationStatus = true;
     copy.policeVerified = false;
     setSelectedReq(copy);
-
-    httpRequest({
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      method: "PUT",
-      url: setStatusOfRequest,
-      data: copy,
-      attachToken: true,
-    })
-      .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
-          position: toast.POSITION.TOP_RIGHT,
-          autoClose: 5000,
-          theme: "dark",
-        });
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
   }
+
   function handlePoliceCheckApprove() {
     const copy = { ...selectedReq };
     copy.policeVerificationStatus = true;
     copy.policeVerified = true;
     setSelectedReq(copy);
+    const data = { ...displayedRequests };
+    data[selectedRid] = copy;
+    setDisplayedRequests(data);
+  }
 
+  function handleApply() {
     httpRequest({
       headers: {
         Accept: "application/json",
@@ -383,12 +294,11 @@ const GramaRequestsComponent = () => {
       },
       method: "PUT",
       url: setStatusOfRequest,
-      data: copy,
+      data: selectedReq,
       attachToken: true,
     })
       .then((data) => {
-        console.log(data);
-        toast.success("Status updated successfully", {
+        toast.success("Request updated successfully", {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 5000,
           theme: "dark",
@@ -479,37 +389,6 @@ const GramaRequestsComponent = () => {
               {selectedReq?.requestedDate}
             </Typography>
           </Box>
-          <Box sx={{ mb: 3, display: "flex", gap: 3 }}>
-            <Box>
-              <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                <b>Status</b>
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 400 }}>
-                {selectedReq?.overallStatus}
-              </Typography>
-            </Box>
-            <Box>
-              <Typography variant="body1" sx={{ fontWeight: 700 }}>
-                <b>Change Status</b>
-              </Typography>
-              <Select
-                id="combo-box-demo"
-                value={changedStatus.status}
-                onChange={(event) => {
-                  setChangedStatus({
-                    reqId: selectedReq?.id,
-                    status: event.target.value,
-                  });
-                }}
-                sx={{ width: 200 }}
-              >
-                <MenuItem value="Completed">Completed</MenuItem>
-                <MenuItem value="Pending">Pending</MenuItem>
-                <MenuItem value="Rejected">Rejected</MenuItem>
-                <MenuItem value="NeedMoreInfo">NeedMoreInfo</MenuItem>
-              </Select>
-            </Box>
-          </Box>
           <Box sx={{ mb: 3 }}>
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               <b>
@@ -540,6 +419,35 @@ const GramaRequestsComponent = () => {
               {selectedReq?.reason}
             </Typography>
           </Box>
+          <Box sx={{ mb: 3, display: "flex"}}>
+            <Box>
+              <Typography variant="body1" sx={{ fontWeight: 700 }}>
+                <b>Request Status</b>
+              </Typography>
+              <Select
+                id="combo-box-demo"
+                value={selectedReq?.overallStatus}
+                onChange={(event) => {
+                  setChangedStatus({
+                    reqId: selectedReq?.id,
+                    status: event.target.value,
+                  });
+                  const copy = { ...selectedReq };
+                  copy.overallStatus = event.target.value;
+                  setSelectedReq(copy);
+                  const data = { ...displayedRequests };
+                  data[selectedRid] = copy;
+                  setDisplayedRequests(data);
+                }}
+                sx={{ width: 200 }}
+              >
+                <MenuItem value="Completed">Completed</MenuItem>
+                <MenuItem value="Pending">Pending</MenuItem>
+                <MenuItem value="Rejected">Rejected</MenuItem>
+                <MenuItem value="NeedMoreInfo">NeedMoreInfo</MenuItem>
+              </Select>
+            </Box>
+          </Box>
           <Box sx={{ mb: 3 }}>
             <Accordion onChange={identityCheckAccordianChange}>
               <AccordionSummary
@@ -549,7 +457,11 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Identity Check :{" "}
-                  {selectedReq?.identityVerificationStatus ? (selectedReq?.identityVerified ? "Approved" : "Declined") : "Not Verified"}
+                  {selectedReq?.identityVerificationStatus
+                    ? selectedReq?.identityVerified
+                      ? "Approved"
+                      : "Declined"
+                    : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -584,22 +496,24 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
-                  { !selectedReq?.identityVerificationStatus && <Box>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={handleIdentityCheckDecline}
-                  >
-                    Decline
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    onClick={handleIdentityCheckApprove}
-                  >
-                    Approve
-                  </Button>
-                  </Box>}
+                  {!selectedReq?.identityVerificationStatus && (
+                    <Box>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={handleIdentityCheckDecline}
+                      >
+                        Decline
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        onClick={handleIdentityCheckApprove}
+                      >
+                        Approve
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
               </AccordionDetails>
             </Accordion>
@@ -612,7 +526,11 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Address Check :{" "}
-                  {selectedReq?.addressVerificationStatus ? (selectedReq?.addressVerified ? "Approved" : "Declined") : "Not Verified"}
+                  {selectedReq?.addressVerificationStatus
+                    ? selectedReq?.addressVerified
+                      ? "Approved"
+                      : "Declined"
+                    : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -641,22 +559,24 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
-                  { !selectedReq?.addressVerificationStatus && <Box>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={handleAddressCheckDecline}
-                  >
-                    Decline
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    onClick={handleAddressCheckApprove}
-                  >
-                    Approve
-                  </Button>
-                  </Box>}
+                  {!selectedReq?.addressVerificationStatus && (
+                    <Box>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={handleAddressCheckDecline}
+                      >
+                        Decline
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        onClick={handleAddressCheckApprove}
+                      >
+                        Approve
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
               </AccordionDetails>
             </Accordion>
@@ -669,7 +589,11 @@ const GramaRequestsComponent = () => {
               >
                 <Typography>
                   Police Check :{" "}
-                  {selectedReq?.policeVerificationStatus ? (selectedReq?.policeVerified ? "Approved" : "Declined") : "Not Verified"}
+                  {selectedReq?.policeVerificationStatus
+                    ? selectedReq?.policeVerified
+                      ? "Approved"
+                      : "Declined"
+                    : "Not Verified"}
                 </Typography>
               </AccordionSummary>
               <AccordionDetails>
@@ -698,36 +622,52 @@ const GramaRequestsComponent = () => {
                     mt: 3,
                   }}
                 >
-                  { !selectedReq?.policeVerificationStatus && <Box>
-                  <Button
-                    variant="outlined"
-                    color="error"
-                    onClick={handlePoliceCheckDecline}
-                  >
-                    Decline
-                  </Button>
-                  <Button
-                    variant="outlined"
-                    color="success"
-                    onClick={handlePoliceCheckApprove}
-                  >
-                    Approve
-                  </Button>
-                  </Box>}
+                  {!selectedReq?.policeVerificationStatus && (
+                    <Box>
+                      <Button
+                        variant="outlined"
+                        color="error"
+                        onClick={handlePoliceCheckDecline}
+                      >
+                        Decline
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        color="success"
+                        onClick={handlePoliceCheckApprove}
+                      >
+                        Approve
+                      </Button>
+                    </Box>
+                  )}
                 </Box>
               </AccordionDetails>
             </Accordion>
           </Box>
         </DialogContent>
-        <DialogActions sx={{ display: "flex", justifyContent: "end" }}>
+        <DialogActions sx={{ display: "flex", justifyContent: "space-around" }}>
           <Button
             variant="outlined"
             color="error"
             onClick={() => {
+              const data = { ...displayedRequests };
+              data[selectedRid] = req;
+              setDisplayedRequests(data);
               setOpenPreview(false);
+
             }}
           >
             Close
+          </Button>
+          <Button
+            variant="outlined"
+            color="success"
+            onClick={() => {
+              handleApply();
+              setOpenPreview(false);
+            }}
+          >
+            Apply
           </Button>
         </DialogActions>
       </Dialog>
@@ -809,6 +749,8 @@ const GramaRequestsComponent = () => {
                     status: displayedRequests[request].overallStatus,
                   });
                   setSelectedReq(displayedRequests[request]);
+                  setSelectedRid(request);
+                  setReq(displayedRequests[request]);
                   setOpenPreview(true);
                 }}
               >
