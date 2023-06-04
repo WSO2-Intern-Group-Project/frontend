@@ -5,7 +5,7 @@ import IdentityImage from "./nic.jpg";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { backendBaseURL } from "../../Utils/endpoints";
 
 function ApplyIdentityComponent() {
   const userdata = JSON.parse(window.sessionStorage.getItem("userdata"));
@@ -25,7 +25,7 @@ function ApplyIdentityComponent() {
         Accept: "application/json",
       },
       method: "POST",
-      url: "https://a7bf0dba-d37a-4f74-ab2a-11d52f500ed9-prod.e1-us-east-azure.choreoapis.dev/bhzm/gramasevabackend/endpoint-9090-803/1.0.0/addRequest",
+      url: backendBaseURL + "/addRequest",
       attachToken: true,
       data: {
         requestType: "Identity",

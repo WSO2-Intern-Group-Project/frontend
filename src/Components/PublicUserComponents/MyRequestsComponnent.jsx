@@ -20,7 +20,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import InfoIcon from "@mui/icons-material/Info";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
-import { requestsByUserAPIUrl } from "../../Utils/endpoints";
+import { backendBaseURL } from "../../Utils/endpoints";
 import { useAuthContext } from "@asgardeo/auth-react";
 
 function MyRequestsComponent() {
@@ -45,7 +45,7 @@ function MyRequestsComponent() {
         Accept: "application/json",
       },
       method: "GET",
-      url: requestsByUserAPIUrl + "?userEmail=" + email,
+      url: backendBaseURL + "/requestsByUser?userEmail=" + email,
       attachToken: true,
     })
       .then((data) => {

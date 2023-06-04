@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { Navigate, useNavigate } from "react-router-dom";
-import { userByIdAPIUrl } from "../Utils/endpoints";
+import { backendBaseURL } from "../Utils/endpoints";
 
 export default function RoleSelect() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export default function RoleSelect() {
             Accept: "application/json",
           },
           method: "GET",
-          url: userByIdAPIUrl + "?id=" + uid,
+          url: backendBaseURL + "/userById?id=" + uid,
           attachToken: true,
         })
           .then((data) => {

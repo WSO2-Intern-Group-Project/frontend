@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Box, Typography, Button, TextField } from "@mui/material";
 import HomeNavBar from "../Components/HomeNavBar";
 import { useAuthContext } from "@asgardeo/auth-react";
-import { addUserAPIUrl } from "../Utils/endpoints";
+import { backendBaseURL } from "../Utils/endpoints";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -23,7 +23,7 @@ export default function GramasevakaDataComponent() {
         "Content-Type": "application/json",
       },
       method: "POST",
-      url: addUserAPIUrl,
+      url: backendBaseURL + "/addUser",
       data: {
         id: window.sessionStorage.getItem("uid"),
         firstName: firstName,

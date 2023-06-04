@@ -24,11 +24,8 @@ import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
-  addressCheckAPIUrl,
-  identityCheckAPIUrl,
-  policeCheckAPIUrl,
-  requestsByDomainAPIUrl,
-  setStatusOfRequest,
+  externalAPIsBaseURL,
+  backendBaseURL,
 } from "../../Utils/endpoints";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { ToastContainer, toast } from "react-toastify";
@@ -80,7 +77,7 @@ const GramaRequestsComponent = () => {
         Accept: "application/json",
       },
       method: "GET",
-      url: requestsByDomainAPIUrl + "?gnDomain=" + gnDomain,
+      url: backendBaseURL + "/requestsByDomain?gnDomain=" + gnDomain,
       attachToken: true,
     })
       .then((data) => {
@@ -151,7 +148,7 @@ const GramaRequestsComponent = () => {
             Accept: "application/json",
           },
           method: "GET",
-          url: identityCheckAPIUrl + "?NIC=" + selectedReq.nic,
+          url: externalAPIsBaseURL + "/identityRecordByNIC?NIC=" + selectedReq.nic,
           attachToken: true,
         })
           .then((data) => {
@@ -176,7 +173,7 @@ const GramaRequestsComponent = () => {
             Accept: "application/json",
           },
           method: "POST",
-          url: addressCheckAPIUrl,
+          url: externalAPIsBaseURL + "/residentsByAddress",
           attachToken: true,
           data: {
             address: selectedReq.address,
@@ -207,7 +204,7 @@ const GramaRequestsComponent = () => {
             Accept: "application/json",
           },
           method: "GET",
-          url: policeCheckAPIUrl + "?NIC=" + selectedReq.nic,
+          url: externalAPIsBaseURL + "/policeRecordsByNIC?NIC=" + selectedReq.nic,
           attachToken: true,
         })
           .then((data) => {
@@ -293,7 +290,7 @@ const GramaRequestsComponent = () => {
         "Content-Type": "application/json",
       },
       method: "PUT",
-      url: setStatusOfRequest,
+      url: backendBaseURL + "/setStatusOfRequest",
       data: selectedReq,
       attachToken: true,
     })
