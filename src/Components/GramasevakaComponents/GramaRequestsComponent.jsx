@@ -148,7 +148,7 @@ const GramaRequestsComponent = () => {
             Accept: "application/json",
           },
           method: "GET",
-          url: externalAPIsBaseURL + "/identityRecordByNIC?NIC=" + selectedReq.nic,
+          url: externalAPIsBaseURL + "/identityRecordByNIC?nic=" + selectedReq.nic,
           attachToken: true,
         })
           .then((data) => {
@@ -204,7 +204,7 @@ const GramaRequestsComponent = () => {
             Accept: "application/json",
           },
           method: "GET",
-          url: externalAPIsBaseURL + "/policeRecordsByNIC?NIC=" + selectedReq.nic,
+          url: externalAPIsBaseURL + "/policeRecordsByNIC?nic=" + selectedReq.nic,
           attachToken: true,
         })
           .then((data) => {
