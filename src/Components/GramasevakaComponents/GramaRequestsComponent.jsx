@@ -23,7 +23,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { externalAPIsBaseURL, backendBaseURL } from "../../Utils/endpoints";
+import { externalAPIsBaseURL, backendBaseURL, addressAPIBaseURL, identityAPIBaseURL, policeAPIBaseURL } from "../../Utils/endpoints";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -149,7 +149,7 @@ const GramaRequestsComponent = () => {
         },
         method: "GET",
         url:
-          externalAPIsBaseURL + "/identityRecordByNIC?nic=" + selectedReq.nic,
+          identityAPIBaseURL + "/identityRecordByNIC?nic=" + selectedReq.nic,
         attachToken: true,
       })
         .then((data) => {
@@ -185,7 +185,7 @@ const GramaRequestsComponent = () => {
           Accept: "application/json",
         },
         method: "POST",
-        url: externalAPIsBaseURL + "/residentsByAddress",
+        url: addressAPIBaseURL + "/residentsByAddress",
         attachToken: true,
         data: {
           address: selectedReq.address,
@@ -209,7 +209,8 @@ const GramaRequestsComponent = () => {
         })
         .catch((err) => {
           const e = err.response.data;
-          if (e.message && e.message === "Id not found.") {
+          console.log(e);
+          if (e.message && e.message === "Address not found.") {
             toast.info("Residents Data unavailable", {
               position: toast.POSITION.TOP_RIGHT,
               autoClose: 5000,
@@ -227,7 +228,7 @@ const GramaRequestsComponent = () => {
           Accept: "application/json",
         },
         method: "GET",
-        url: externalAPIsBaseURL + "/policeRecordsByNIC?nic=" + selectedReq.nic,
+        url: policeAPIBaseURL + "/policeRecordsByNIC?nic=" + selectedReq.nic,
         attachToken: true,
       })
         .then((data) => {
@@ -238,6 +239,13 @@ const GramaRequestsComponent = () => {
             set: true,
             response: newdata,
           });
+          if (Object.keys(newdata).length === 0) {
+            toast.info("No Criminal Reports", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              theme: "dark",
+            });
+          }
 
           const copy = { ...apiData };
           copy[selectedRid].policeCheckDetails = {
@@ -247,14 +255,7 @@ const GramaRequestsComponent = () => {
           setApiData(copy);
         })
         .catch((err) => {
-          const e = err.response.data;
-          if (e.message && e.message === "Id not found.") {
-            toast.info("Police Data unavailable", {
-              position: toast.POSITION.TOP_RIGHT,
-              autoClose: 5000,
-              theme: "dark",
-            });
-          }
+          console.log(err);
         });
     }
   }

@@ -6,7 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { AuthProvider } from "@asgardeo/auth-react";
-import { backendBaseURL, externalAPIsBaseURL } from "./Utils/endpoints";
+import { addressAPIBaseURL, backendBaseURL, externalAPIsBaseURL, identityAPIBaseURL, policeAPIBaseURL } from "./Utils/endpoints";
 
 const config = {
   signInRedirectURL: "https://aa55d6b7-c7a8-43c8-bb61-fa01da542bf2.e1-us-east-azure.choreoapps.dev/roleselect",
@@ -18,6 +18,9 @@ const config = {
   resourceServerURLs: [
     backendBaseURL,
     externalAPIsBaseURL,
+    addressAPIBaseURL,
+    identityAPIBaseURL,
+    policeAPIBaseURL
   ],
 };
 
