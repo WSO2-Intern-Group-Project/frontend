@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { backendBaseURL } from "../Utils/endpoints";
+import LoadingScreen from "../Utils/LoadingScreen";
 
 export default function RoleSelect() {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function RoleSelect() {
   useEffect(() => {}, [state]);
 
   if (state.isLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   } else {
     if (loading) {
       getDecodedIDToken().then((token) => {
@@ -41,7 +42,7 @@ export default function RoleSelect() {
     }
   }
   if (loading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   } else {
     if (data.user) {
       window.sessionStorage.setItem("userdata", JSON.stringify(data.userdata));
@@ -76,7 +77,7 @@ export default function RoleSelect() {
     }
   }
   if (tokenLoading) {
-    return <div>Loading...</div>;
+    return <LoadingScreen />;
   } else {
     if (type === "user") {
       return <Navigate to={"/user"} />;

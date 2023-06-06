@@ -23,10 +23,7 @@ import FilterAltIcon from "@mui/icons-material/FilterAlt";
 import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import {
-  externalAPIsBaseURL,
-  backendBaseURL,
-} from "../../Utils/endpoints";
+import { externalAPIsBaseURL, backendBaseURL } from "../../Utils/endpoints";
 import { useAuthContext } from "@asgardeo/auth-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -52,17 +49,15 @@ const GramaRequestsComponent = () => {
     reqId: selectedReq?.id,
     status: selectedReq?.overallStatus,
   });
-  const [identityCheckAccordian, setIdentityCheckAccordian] = useState(false);
+  const [apiData, setApiData] = useState(null);
   const [identityCheckDetails, setIdentityCheckDetails] = useState({
     set: false,
     response: null,
   });
-  const [addressCheckAccordian, setAddressCheckAccordian] = useState(false);
   const [addressCheckDetails, setAddressCheckDetails] = useState({
     set: false,
     response: null,
   });
-  const [policeCheckAccordian, setPoliceCheckAccordian] = useState(false);
   const [policeCheckDetails, setPoliceCheckDetails] = useState({
     set: false,
     response: null,
@@ -82,14 +77,21 @@ const GramaRequestsComponent = () => {
     })
       .then((data) => {
         let requests = {};
+        let api = {};
         data.data.map((request, key) => {
           let k = key + 1;
           requests[k] = request;
+          api[k] = {
+            identityCheckDetails: null,
+            addressCheckDetails: null,
+            policeCheckDetails: null,
+          };
         });
         setDisplayedRequests(
           Object.fromEntries(Object.entries(requests).slice(0, 5))
         );
         setRequests(requests);
+        setApiData(api);
       })
       .catch((err) => {
         console.log(err);
@@ -140,86 +142,112 @@ const GramaRequestsComponent = () => {
   }
 
   function identityCheckAccordianChange() {
-    setIdentityCheckAccordian(!identityCheckAccordian);
-    if (!identityCheckAccordian) {
-      if (!identityCheckDetails.set) {
-        httpRequest({
-          headers: {
-            Accept: "application/json",
-          },
-          method: "GET",
-          url: externalAPIsBaseURL + "/identityRecordByNIC?nic=" + selectedReq.nic,
-          attachToken: true,
-        })
-          .then((data) => {
-            setIdentityCheckDetails({
-              set: true,
-              response: data.data,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+    if (!identityCheckDetails.set) {
+      httpRequest({
+        headers: {
+          Accept: "application/json",
+        },
+        method: "GET",
+        url:
+          externalAPIsBaseURL + "/identityRecordByNIC?nic=" + selectedReq.nic,
+        attachToken: true,
+      })
+        .then((data) => {
+          setIdentityCheckDetails({
+            set: true,
+            response: data.data,
           });
-      }
+
+          const copy = { ...apiData };
+          copy[selectedRid].identityCheckDetails = {
+            set: true,
+            response: data.data,
+          };
+          setApiData(copy);
+        })
+        .catch(() => {
+          toast.info("Identity Data Unavailable", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            theme: "dark",
+          });
+        });
     }
   }
 
   function addressCheckAccordianChange() {
-    setAddressCheckAccordian(!addressCheckAccordian);
-    if (!addressCheckAccordian) {
-      if (!addressCheckDetails.set) {
-        httpRequest({
-          headers: {
-            Accept: "application/json",
-          },
-          method: "POST",
-          url: externalAPIsBaseURL + "/residentsByAddress",
-          attachToken: true,
-          data: {
-            address: selectedReq.address,
-          },
-        })
-          .then((data) => {
-            const newdata = Object.keys(data.data).map((k) => {
-              return data.data[k].name + " - " + data.data[k].NIC;
-            });
-            setAddressCheckDetails({
-              set: true,
-              response: newdata,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+    if (!addressCheckDetails.set) {
+      httpRequest({
+        headers: {
+          Accept: "application/json",
+        },
+        method: "POST",
+        url: externalAPIsBaseURL + "/residentsByAddress",
+        attachToken: true,
+        data: {
+          address: selectedReq.address,
+        },
+      })
+        .then((data) => {
+          const newdata = Object.keys(data.data).map((k) => {
+            return data.data[k].name + " - " + data.data[k].NIC;
           });
-      }
+          setAddressCheckDetails({
+            set: true,
+            response: newdata,
+          });
+
+          const copy = { ...apiData };
+          copy[selectedRid].addressCheckDetails = {
+            set: true,
+            response: newdata,
+          };
+          setApiData(copy);
+        })
+        .catch(() => {
+          toast.info("Residents Data unavailable", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            theme: "dark",
+          });
+        });
     }
   }
 
   function policeCheckAccordianChange() {
-    setPoliceCheckAccordian(!policeCheckAccordian);
-    if (!policeCheckAccordian) {
-      if (!policeCheckDetails.set) {
-        httpRequest({
-          headers: {
-            Accept: "application/json",
-          },
-          method: "GET",
-          url: externalAPIsBaseURL + "/policeRecordsByNIC?nic=" + selectedReq.nic,
-          attachToken: true,
-        })
-          .then((data) => {
-            const newdata = Object.keys(data.data).map((k) => {
-              return data.data[k].description;
-            });
-            setPoliceCheckDetails({
-              set: true,
-              response: newdata,
-            });
-          })
-          .catch((err) => {
-            console.log(err);
+    if (!policeCheckDetails.set) {
+      httpRequest({
+        headers: {
+          Accept: "application/json",
+        },
+        method: "GET",
+        url: externalAPIsBaseURL + "/policeRecordsByNIC?nic=" + selectedReq.nic,
+        attachToken: true,
+      })
+        .then((data) => {
+          console.log(data);
+          const newdata = Object.keys(data.data).map((k) => {
+            return data.data[k].description;
           });
-      }
+          setPoliceCheckDetails({
+            set: true,
+            response: newdata,
+          });
+
+          const copy = { ...apiData };
+          copy[selectedRid].policeCheckDetails = {
+            set: true,
+            response: newdata,
+          };
+          setApiData(copy);
+        })
+        .catch((err) => {
+          toast.info("Police Data unavailable", {
+            position: toast.POSITION.TOP_RIGHT,
+            autoClose: 5000,
+            theme: "dark",
+          });
+        });
     }
   }
 
@@ -416,7 +444,7 @@ const GramaRequestsComponent = () => {
               {selectedReq?.reason}
             </Typography>
           </Box>
-          <Box sx={{ mb: 3, display: "flex"}}>
+          <Box sx={{ mb: 3, display: "flex" }}>
             <Box>
               <Typography variant="body1" sx={{ fontWeight: 700 }}>
                 <b>Request Status</b>
@@ -651,7 +679,6 @@ const GramaRequestsComponent = () => {
               data[selectedRid] = req;
               setDisplayedRequests(data);
               setOpenPreview(false);
-
             }}
           >
             Close
@@ -748,6 +775,22 @@ const GramaRequestsComponent = () => {
                   setSelectedReq(displayedRequests[request]);
                   setSelectedRid(request);
                   setReq(displayedRequests[request]);
+
+                  setIdentityCheckDetails(
+                    apiData[request].identityCheckDetails
+                      ? apiData[request].identityCheckDetails
+                      : { set: false, response: null }
+                  );
+                  setPoliceCheckDetails(
+                    apiData[request].policeCheckDetails
+                      ? apiData[request].policeCheckDetails
+                      : { set: false, response: null }
+                  );
+                  setAddressCheckDetails(
+                    apiData[request].addressCheckDetails
+                      ? apiData[request].addressCheckDetails
+                      : { set: false, response: null }
+                  );
                   setOpenPreview(true);
                 }}
               >
