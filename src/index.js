@@ -9,8 +9,8 @@ import { AuthProvider } from "@asgardeo/auth-react";
 import { backendBaseURL, externalAPIsBaseURL } from "./Utils/endpoints";
 
 const config = {
-  signInRedirectURL: "http://localhost:3000/roleselect",
-  signOutRedirectURL: "http://localhost:3000",
+  signInRedirectURL: "https://aa55d6b7-c7a8-43c8-bb61-fa01da542bf2.e1-us-east-azure.choreoapps.dev/roleselect",
+  signOutRedirectURL: "https://aa55d6b7-c7a8-43c8-bb61-fa01da542bf2.e1-us-east-azure.choreoapps.dev",
   clientID: "cUdKTvv88ZNnrd82SJE3reJDSfka",
   baseUrl: "https://api.asgardeo.io/t/internprojectgroup5",
   scope: ["openid", "profile", "groups"],
