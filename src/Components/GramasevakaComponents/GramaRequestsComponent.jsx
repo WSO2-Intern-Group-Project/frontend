@@ -165,12 +165,15 @@ const GramaRequestsComponent = () => {
           };
           setApiData(copy);
         })
-        .catch(() => {
-          toast.info("Identity Data Unavailable", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 5000,
-            theme: "dark",
-          });
+        .catch((err) => {
+          const e = err.response.data;
+          if (e.message && e.message === "Id not found.") {
+            toast.info("Identity Data Unavailable", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              theme: "dark",
+            });
+          }
         });
     }
   }
@@ -204,12 +207,15 @@ const GramaRequestsComponent = () => {
           };
           setApiData(copy);
         })
-        .catch(() => {
-          toast.info("Residents Data unavailable", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 5000,
-            theme: "dark",
-          });
+        .catch((err) => {
+          const e = err.response.data;
+          if (e.message && e.message === "Id not found.") {
+            toast.info("Residents Data unavailable", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              theme: "dark",
+            });
+          }
         });
     }
   }
@@ -225,7 +231,6 @@ const GramaRequestsComponent = () => {
         attachToken: true,
       })
         .then((data) => {
-          console.log(data);
           const newdata = Object.keys(data.data).map((k) => {
             return data.data[k].description;
           });
@@ -242,11 +247,14 @@ const GramaRequestsComponent = () => {
           setApiData(copy);
         })
         .catch((err) => {
-          toast.info("Police Data unavailable", {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 5000,
-            theme: "dark",
-          });
+          const e = err.response.data;
+          if (e.message && e.message === "Id not found.") {
+            toast.info("Police Data unavailable", {
+              position: toast.POSITION.TOP_RIGHT,
+              autoClose: 5000,
+              theme: "dark",
+            });
+          }
         });
     }
   }
