@@ -1,24 +1,56 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { Box } from "@mui/system";
-import {
-  Button,
-  Card,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Card, TextField, Typography } from "@mui/material";
 import HelpImage from "./help.jpg";
+import { useAuthContext } from "@asgardeo/auth-react";
+import { backendBaseURL } from "../../Utils/endpoints";
+import { ToastContainer, toast } from "react-toastify";
 
 function HelpComponent() {
-    const [issue, setIssue] = useState("");
+  const fullname =
+    JSON.parse(window.sessionStorage.getItem("userdata"))["firstName"] +
+    " " +
+    JSON.parse(window.sessionStorage.getItem("userdata"))["lastName"];
+  const email = JSON.parse(window.sessionStorage.getItem("userdata"))["email"];
+  const [issue, setIssue] = useState("");
+  const { httpRequest } = useAuthContext();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(issue);
-        setIssue("");
-    }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formatedIssue = `Name: ${fullname}\nEmail: ${email}\nIssue: ${issue}`;
+    console.log(formatedIssue);
+
+    httpRequest({
+      headers: {
+        Accept: "application/json",
+      },
+      method: "POST",
+      url: backendBaseURL + "/help",
+      attachToken: true,
+      data: {
+        message: formatedIssue,
+      },
+    })
+      .then((data) => {
+        toast.success("Issue Submitted successfully", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      })
+      .catch((err) => {
+        toast.error("Message not sent", {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 5000,
+          theme: "dark",
+        });
+      });
+    setIssue("");
+  };
 
   return (
     <>
+      <ToastContainer />
       <Box>
         <Box>
           <Card
@@ -95,12 +127,14 @@ function HelpComponent() {
               </form>
             </Box>
           </Card>
-          <Box sx={{
-            width:"100%",
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-        }}>
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <img src={HelpImage} width="70%" />
           </Box>
         </Box>
