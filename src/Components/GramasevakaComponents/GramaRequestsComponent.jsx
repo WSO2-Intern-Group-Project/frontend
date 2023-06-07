@@ -14,6 +14,7 @@ import {
   Typography,
   Select,
   MenuItem,
+  Chip,
 } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import PendingIcon from "@mui/icons-material/Pending";
@@ -77,6 +78,7 @@ const GramaRequestsComponent = () => {
     })
       .then((data) => {
         let requests = {};
+        const reversed = {};
         let api = {};
         data.data.map((request, key) => {
           let k = key + 1;
@@ -87,10 +89,17 @@ const GramaRequestsComponent = () => {
             policeCheckDetails: null,
           };
         });
+
+        Object.keys(requests)
+          .reverse()
+          .forEach((key) => {
+            reversed[key] = requests[key];
+          });
+
         setDisplayedRequests(
-          Object.fromEntries(Object.entries(requests).slice(0, 5))
+          Object.fromEntries(Object.entries(reversed).slice(0, 5))
         );
-        setRequests(requests);
+        setRequests(reversed);
         setApiData(api);
       })
       .catch((err) => {
@@ -358,15 +367,36 @@ const GramaRequestsComponent = () => {
               multiple
               filterSelectedOptions
               id="combo-box-demo"
-              options={["Address Certificate", "Identity Certificate"]}
+              options={["Address", "Identity"]}
               getOptionLabel={(option) => option}
-              sx={{ width: 300 }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    color="info"
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              sx={{ width: "100%" }}
               value={filteredTypes}
               onChange={(event, value) => {
                 setFilteredTypes(value);
               }}
               renderInput={(params) => (
-                <TextField {...params} label="Type" placeholder="Type" />
+                <TextField
+                  {...params}
+                  label="Type"
+                  placeholder="Type"
+                  variant="filled"
+                  color="info"
+                  sx={{
+                    p: 1,
+                    backgroundColor: "primary.light",
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                />
               )}
             />
             <Autocomplete
@@ -379,9 +409,30 @@ const GramaRequestsComponent = () => {
               onChange={(event, value) => {
                 setFilteredStatuses(value);
               }}
-              sx={{ width: 300 }}
+              renderTags={(value, getTagProps) =>
+                value.map((option, index) => (
+                  <Chip
+                    label={option}
+                    color="info"
+                    {...getTagProps({ index })}
+                  />
+                ))
+              }
+              sx={{ width: "100%" }}
               renderInput={(params) => (
-                <TextField {...params} label="Status" placeholder="Status" />
+                <TextField
+                  {...params}
+                  label="Status"
+                  placeholder="Status"
+                  variant="filled"
+                  color="info"
+                  sx={{
+                    p: 1,
+                    backgroundColor: "primary.light",
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
+                  }}
+                />
               )}
             />
           </Box>

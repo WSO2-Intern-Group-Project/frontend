@@ -50,14 +50,20 @@ function MyRequestsComponent() {
     })
       .then((data) => {
         let requests = {};
+        const reversed = {};
         data.data.map((request, key) => {
           let k = key + 1;
           requests[k] = request;
         });
+        Object.keys(requests)
+          .reverse()
+          .forEach((key) => {
+            reversed[key] = requests[key];
+          });
         setDisplayedRequests(
-          Object.fromEntries(Object.entries(requests).slice(0, 5))
+          Object.fromEntries(Object.entries(reversed).slice(0, 5))
         );
-        setRequests(requests);
+        setRequests(reversed);
       })
       .catch((err) => {
         console.log(err);

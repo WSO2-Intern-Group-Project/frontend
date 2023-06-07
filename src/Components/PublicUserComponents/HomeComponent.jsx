@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 const pages = {
   "Apply for Address Certificate": "applyAddress",
   "Apply for Identity Certificate": "applyIdentity",
-  "Check Status": "myRequests",
+  "My Requests": "myRequests",
   "Help": "help",
 };
 
